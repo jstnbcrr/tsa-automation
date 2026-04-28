@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tech Stack Automation LLC</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f8fafc; color: #2d3748; }
+
+    /* NAV */
+    nav {
+      background: #1a365d;
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    nav .logo { color: #fff; font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
+    nav .logo span { color: #63b3ed; }
+    nav .nav-links a {
+      color: #a0aec0;
+      text-decoration: none;
+      margin-left: 24px;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+    nav .nav-links a:hover { color: #fff; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%);
+      padding: 80px 40px;
+      text-align: center;
+      color: #fff;
+    }
+    .hero h1 { font-size: 42px; font-weight: 800; margin-bottom: 16px; }
+    .hero h1 span { color: #63b3ed; }
+    .hero p { font-size: 18px; color: #bee3f8; max-width: 600px; margin: 0 auto 32px; line-height: 1.6; }
+    .hero .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #bee3f8;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      margin-bottom: 24px;
+    }
+
+    /* STATS */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 40px;
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
+      flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat .number { font-size: 32px; font-weight: 800; color: #1a365d; }
+    .stat .label { font-size: 13px; color: #718096; margin-top: 4px; }
+
+    /* SECTION */
+    .section { padding: 60px 40px; max-width: 1100px; margin: 0 auto; }
+    .section-title { font-size: 28px; font-weight: 700; color: #1a365d; margin-bottom: 8px; }
+    .section-sub { font-size: 15px; color: #718096; margin-bottom: 40px; }
+
+    /* CARDS GRID */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+    .card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 28px;
+      transition: box-shadow 0.2s, transform 0.2s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); transform: translateY(-2px); }
+    .card .icon {
+      width: 48px; height: 48px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+    .card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; color: #1a365d; }
+    .card p { font-size: 13px; color: #718096; line-height: 1.6; margin-bottom: 16px; }
+    .card .tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .card .cta {
+      margin-top: 16px;
+      display: inline-block;
+      background: #1a365d;
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .card .cta:hover { background: #2b6cb0; }
+
+    /* COLORS */
+    .blue { background: #ebf8ff; } .blue .icon { background: #ebf8ff; }
+    .green { background: #f0fff4; } .green .icon { background: #f0fff4; }
+    .purple { background: #faf5ff; } .purple .icon { background: #faf5ff; }
+    .orange { background: #fffaf0; } .orange .icon { background: #fffaf0; }
+    .red { background: #fff5f5; } .red .icon { background: #fff5f5; }
+
+    .tag-blue { background: #ebf8ff; color: #2b6cb0; }
+    .tag-green { background: #c6f6d5; color: #276749; }
+    .tag-purple { background: #e9d8fd; color: #6b46c1; }
+    .tag-orange { background: #feebc8; color: #c05621; }
+    .tag-red { background: #fed7d7; color: #c53030; }
+
+    /* FOOTER */
+    footer {
+      background: #1a365d;
+      color: #a0aec0;
+      text-align: center;
+      padding: 32px;
+      font-size: 13px;
+    }
+    footer strong { color: #fff; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Tech Stack <span>Automation</span></div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="forms/onboarding.html">Client Intake</a>
+    <a href="forms/expense.html">Expenses</a>
+    <a href="forms/complaint.html">Support</a>
+    <a href="forms/meeting.html">Meeting Notes</a>
+    <a href="forms/content.html">Content Ideas</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="badge">🎓 ISA 4600 Senior Project — Utah Tech University</div>
+  <h1>Automation for <span>Real Business</span></h1>
+  <p>Tech Stack Automation LLC builds production-grade n8n workflows that replace $1,000+/month enterprise tools for $25/month.</p>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="number">12</div><div class="label">Workflows Built</div></div>
+  <div class="stat"><div class="number">$15K+</div><div class="label">Annual Savings</div></div>
+  <div class="stat"><div class="number">$25/mo</div><div class="label">Total Cost</div></div>
+  <div class="stat"><div class="number">GPT-4o</div><div class="label">AI Powered</div></div>
+</div>
+
+<div class="section">
+  <div class="section-title">Live Automation Forms</div>
+  <div class="section-sub">Each form triggers a real n8n workflow — data is processed, logged to Google Sheets, and emails are sent automatically.</div>
+
+  <div class="cards">
+
+    <div class="card">
+      <div class="icon">🧾</div>
+      <span class="tag tag-blue">Professional Services</span>
+      <h3>Client Onboarding Intake</h3>
+      <p>New client submits their info → welcome email sent instantly → staff notified → document request follows automatically.</p>
+      <a href="forms/onboarding.html" class="cta">Start Onboarding →</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">💸</div>
+      <span class="tag tag-green">Personal & Business</span>
+      <h3>Expense Logger</h3>
+      <p>Submit an expense → logged to Google Sheets instantly → confirmation receipt emailed to you. No app needed.</p>
+      <a href="forms/expense.html" class="cta">Log Expense →</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">😤</div>
+      <span class="tag tag-red">Customer Service</span>
+      <h3>Customer Complaint Handler</h3>
+      <p>Submit a complaint → GPT-4o analyzes severity → routes HIGH/MEDIUM/LOW automatically → staff alerted or auto-response sent.</p>
+      <a href="forms/complaint.html" class="cta">Submit Complaint →</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">📝</div>
+      <span class="tag tag-purple">AI Powered</span>
+      <h3>Meeting Notes Summarizer</h3>
+      <p>Paste raw meeting notes → GPT-4o extracts action items, decisions, and next steps → summary emailed to all attendees.</p>
+      <a href="forms/meeting.html" class="cta">Summarize Meeting →</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">💡</div>
+      <span class="tag tag-orange">Content & Marketing</span>
+      <h3>Content Idea Capture</h3>
+      <p>Submit a rough idea → GPT-4o builds a full content brief with title, audience, outline, and CTA → emailed back instantly.</p>
+      <a href="forms/content.html" class="cta">Capture Idea →</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">📋</div>
+      <span class="tag tag-blue">Professional Services</span>
+      <h3>Proposal Ready</h3>
+      <p>Mark a proposal as ready → client receives it instantly → automatic follow-ups fire at 3 and 6 days if no response.</p>
+      <a href="forms/proposal.html" class="cta">Send Proposal →</a>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <strong>Tech Stack Automation LLC</strong> — ISA 4600 Senior Project | Justin Becerra | Utah Tech University | Spring 2026<br>
+  <span style="margin-top:8px;display:block;">Powered by n8n Cloud · OpenAI GPT-4o · Google Sheets</span>
+</footer>
+
+</body>
+</html>

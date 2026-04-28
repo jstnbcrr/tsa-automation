@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content Idea Capture — TSA</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f8fafc; color: #2d3748; min-height: 100vh; }
+    nav { background: #1a365d; padding: 16px 40px; display: flex; align-items: center; justify-content: space-between; }
+    nav .logo { color: #fff; font-size: 18px; font-weight: 700; }
+    nav a { color: #a0aec0; font-size: 13px; text-decoration: none; }
+    nav a:hover { color: #fff; }
+    .container { max-width: 620px; margin: 48px auto; padding: 0 20px; }
+    .card { background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+    .card-header { background: linear-gradient(135deg, #c05621, #dd6b20); padding: 32px; }
+    .card-header h1 { color: #fff; font-size: 22px; margin-bottom: 6px; }
+    .card-header p { color: #feebc8; font-size: 14px; }
+    .card-body { padding: 32px; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 6px; }
+    input, select, textarea {
+      width: 100%; padding: 10px 14px;
+      border: 1px solid #e2e8f0; border-radius: 8px;
+      font-size: 14px; font-family: inherit;
+      color: #2d3748; background: #f8fafc;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none; border-color: #dd6b20;
+      box-shadow: 0 0 0 3px rgba(221,107,32,0.15);
+      background: #fff;
+    }
+    textarea { resize: vertical; min-height: 120px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    button {
+      width: 100%; padding: 14px;
+      background: #c05621; color: #fff;
+      border: none; border-radius: 8px;
+      font-size: 15px; font-weight: 600;
+      cursor: pointer; transition: background 0.2s;
+      margin-top: 8px;
+    }
+    button:hover { background: #dd6b20; }
+    button:disabled { background: #a0aec0; cursor: not-allowed; }
+    .success { display: none; background: #f0fff4; border: 1px solid #9ae6b4; border-radius: 8px; padding: 20px; text-align: center; margin-top: 20px; }
+    .success h3 { color: #276749; margin-bottom: 6px; }
+    .success p { color: #4a5568; font-size: 13px; }
+    .error { display: none; background: #fff5f5; border: 1px solid #feb2b2; border-radius: 8px; padding: 16px; margin-top: 16px; font-size: 13px; color: #c53030; }
+    .info-box { background: #fffaf0; border-left: 3px solid #dd6b20; padding: 12px 16px; border-radius: 4px; margin-bottom: 24px; font-size: 13px; color: #c05621; }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="logo">Tech Stack Automation</div>
+  <a href="../index.html">← Back to Home</a>
+</nav>
+
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h1>💡 Content Idea Capture</h1>
+      <p>Submit a rough idea — GPT-4o builds a full content brief and emails it back instantly</p>
+    </div>
+    <div class="card-body">
+      <div class="info-box">🤖 GPT-4o generates: refined title, target audience, content angle, full outline, keywords, and CTA</div>
+      <form id="contentForm">
+        <div class="row">
+          <div class="form-group">
+            <label>Your Name *</label>
+            <input type="text" id="submittedBy" required placeholder="Justin Becerra" />
+          </div>
+          <div class="form-group">
+            <label>Your Email *</label>
+            <input type="email" id="email" required placeholder="you@company.com" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <label>Content Type *</label>
+            <select id="contentType" required>
+              <option value="">Select...</option>
+              <option>Blog Post</option>
+              <option>LinkedIn Article</option>
+              <option>YouTube Video</option>
+              <option>Email Newsletter</option>
+              <option>Social Media Post</option>
+              <option>Podcast Episode</option>
+              <option>Case Study</option>
+              <option>Whitepaper</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Platform *</label>
+            <select id="platform" required>
+              <option value="">Select...</option>
+              <option>Website / Blog</option>
+              <option>LinkedIn</option>
+              <option>YouTube</option>
+              <option>Instagram</option>
+              <option>TikTok</option>
+              <option>Email</option>
+              <option>Podcast</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Your Raw Idea *</label>
+          <textarea id="rawIdea" required placeholder="Just describe your idea in plain language. It doesn't need to be polished — GPT-4o will expand it into a full brief..."></textarea>
+        </div>
+        <button type="submit" id="submitBtn">Generate Content Brief →</button>
+      </form>
+
+      <div class="success" id="successMsg">
+        <h3>✅ Brief Generated!</h3>
+        <p>GPT-4o has expanded your idea into a full content brief. Check your email — it should arrive within 30 seconds.</p>
+      </div>
+      <div class="error" id="errorMsg">Something went wrong. Please try again.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('contentForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Generating with GPT-4o...';
+
+    const payload = {
+      submittedBy: document.getElementById('submittedBy').value,
+      email: document.getElementById('email').value,
+      contentType: document.getElementById('contentType').value,
+      platform: document.getElementById('platform').value,
+      rawIdea: document.getElementById('rawIdea').value
+    };
+
+    try {
+      await fetch('https://jstnbcrr.app.n8n.cloud/webhook/capture-idea', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      document.getElementById('contentForm').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+    } catch (err) {
+      document.getElementById('errorMsg').style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Generate Content Brief →';
+    }
+  });
+</script>
+</body>
+</html>

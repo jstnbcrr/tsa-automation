@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meeting Notes Summarizer — TSA</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f8fafc; color: #2d3748; min-height: 100vh; }
+    nav { background: #1a365d; padding: 16px 40px; display: flex; align-items: center; justify-content: space-between; }
+    nav .logo { color: #fff; font-size: 18px; font-weight: 700; }
+    nav a { color: #a0aec0; font-size: 13px; text-decoration: none; }
+    nav a:hover { color: #fff; }
+    .container { max-width: 620px; margin: 48px auto; padding: 0 20px; }
+    .card { background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+    .card-header { background: linear-gradient(135deg, #553c9a, #805ad5); padding: 32px; }
+    .card-header h1 { color: #fff; font-size: 22px; margin-bottom: 6px; }
+    .card-header p { color: #e9d8fd; font-size: 14px; }
+    .card-body { padding: 32px; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 6px; }
+    input, select, textarea {
+      width: 100%; padding: 10px 14px;
+      border: 1px solid #e2e8f0; border-radius: 8px;
+      font-size: 14px; font-family: inherit;
+      color: #2d3748; background: #f8fafc;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none; border-color: #805ad5;
+      box-shadow: 0 0 0 3px rgba(128,90,213,0.15);
+      background: #fff;
+    }
+    textarea { resize: vertical; min-height: 180px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    button {
+      width: 100%; padding: 14px;
+      background: #553c9a; color: #fff;
+      border: none; border-radius: 8px;
+      font-size: 15px; font-weight: 600;
+      cursor: pointer; transition: background 0.2s;
+      margin-top: 8px;
+    }
+    button:hover { background: #805ad5; }
+    button:disabled { background: #a0aec0; cursor: not-allowed; }
+    .success { display: none; background: #f0fff4; border: 1px solid #9ae6b4; border-radius: 8px; padding: 20px; text-align: center; margin-top: 20px; }
+    .success h3 { color: #276749; margin-bottom: 6px; }
+    .success p { color: #4a5568; font-size: 13px; }
+    .error { display: none; background: #fff5f5; border: 1px solid #feb2b2; border-radius: 8px; padding: 16px; margin-top: 16px; font-size: 13px; color: #c53030; }
+    .info-box { background: #faf5ff; border-left: 3px solid #805ad5; padding: 12px 16px; border-radius: 4px; margin-bottom: 24px; font-size: 13px; color: #553c9a; }
+    .hint { font-size: 11px; color: #a0aec0; margin-top: 4px; }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="logo">Tech Stack Automation</div>
+  <a href="../index.html">← Back to Home</a>
+</nav>
+
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h1>📝 Meeting Notes Summarizer</h1>
+      <p>Paste your raw notes — GPT-4o extracts action items, decisions, and next steps</p>
+    </div>
+    <div class="card-body">
+      <div class="info-box">🤖 GPT-4o will generate a structured summary and email it to all attendees automatically</div>
+      <form id="meetingForm">
+        <div class="form-group">
+          <label>Meeting Title *</label>
+          <input type="text" id="meetingTitle" required placeholder="Q2 Strategy Meeting" />
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <label>Submitted By *</label>
+            <input type="text" id="submittedBy" required placeholder="Justin Becerra" />
+          </div>
+          <div class="form-group">
+            <label>Meeting Date *</label>
+            <input type="date" id="meetingDate" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Attendee Emails *</label>
+          <input type="text" id="attendeeEmails" required placeholder="email1@co.com, email2@co.com" />
+          <div class="hint">Separate multiple emails with commas — summary will be sent to all</div>
+        </div>
+        <div class="form-group">
+          <label>Raw Meeting Notes *</label>
+          <textarea id="rawNotes" required placeholder="Paste your unstructured meeting notes here. Don't worry about formatting — just dump everything in and GPT-4o will organize it..."></textarea>
+        </div>
+        <button type="submit" id="submitBtn">Summarize Meeting →</button>
+      </form>
+
+      <div class="success" id="successMsg">
+        <h3>✅ Summary Sent!</h3>
+        <p>GPT-4o has summarized your meeting. A structured summary with action items and next steps has been emailed to all attendees.</p>
+      </div>
+      <div class="error" id="errorMsg">Something went wrong. Please try again.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('meetingDate').valueAsDate = new Date();
+
+  document.getElementById('meetingForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Summarizing with GPT-4o...';
+
+    const payload = {
+      meetingTitle: document.getElementById('meetingTitle').value,
+      submittedBy: document.getElementById('submittedBy').value,
+      meetingDate: document.getElementById('meetingDate').value,
+      attendeeEmails: document.getElementById('attendeeEmails').value,
+      rawNotes: document.getElementById('rawNotes').value
+    };
+
+    try {
+      await fetch('https://jstnbcrr.app.n8n.cloud/webhook/summarize-meeting', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      document.getElementById('meetingForm').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+    } catch (err) {
+      document.getElementById('errorMsg').style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Summarize Meeting →';
+    }
+  });
+</script>
+</body>
+</html>
