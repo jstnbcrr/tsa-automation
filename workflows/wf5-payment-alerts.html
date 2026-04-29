@@ -85,6 +85,11 @@
   .btn-primary{display:inline-block;background:var(--accent);color:#000;padding:14px 32px;border-radius:8px;font-weight:700;font-size:15px;transition:opacity 0.2s;}
   .btn-primary:hover{opacity:0.85;}
   .btn-secondary{display:inline-block;background:transparent;color:var(--text);padding:14px 32px;border-radius:8px;font-weight:600;font-size:15px;border:1px solid var(--border);margin-left:12px;}
+  .auto-run-note{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:12px;padding:24px 28px;margin-top:48px;display:flex;gap:20px;align-items:flex-start;}
+  .auto-run-icon{font-size:32px;flex-shrink:0;line-height:1;margin-top:2px;}
+  .auto-run-content h4{font-size:14px;font-weight:700;margin-bottom:8px;color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;}
+  .auto-run-content p{font-size:14px;color:var(--muted);line-height:1.7;max-width:640px;}
+  .auto-run-trigger{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--text);margin-top:12px;}
   @media(max-width:768px){nav{padding:14px 20px;}.hero{padding:60px 20px;}.section{padding:60px 20px;}.pros-cons,.tier-grid{grid-template-columns:1fr;}.cta-section{margin:40px 20px;padding:40px 20px;}}
 </style>
 </head>
@@ -132,6 +137,15 @@
       <div class="tier-label">7+ Days Overdue</div>
       <div class="tier-action">🚨 Staff escalation alert — internal flag for collections action</div>
       <div class="tier-sub">Tone: internal only — staff reviews manually</div>
+    </div>
+  </div>
+
+  <div class="auto-run-note">
+    <div class="auto-run-icon">⏰</div>
+    <div class="auto-run-content">
+      <h4>This Workflow Runs Every Weekday Morning</h4>
+      <p>n8n fires on a schedule every weekday at 8:00 AM. It reads your Invoices Google Sheet, calculates days until or past each due date, and routes every invoice through the correct alert tier — a friendly reminder at 3 days out, an overdue notice on day 0, and an internal escalation flag at 7+ days past due. No manual scanning, no missed invoices.</p>
+      <div class="auto-run-trigger">⏰ Schedule trigger · Every weekday at 8:00 AM</div>
     </div>
   </div>
 </div>
