@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>WF4 — Proposal Delivery + Follow-Up | Tech Stack Automation</title>
 <style>
-  :root{--bg:#0a0e1a;--bg2:#111827;--bg3:#1a2235;--border:#1e2d45;--text:#e2e8f0;--muted:#94a3b8;--accent:#3b82f6;--green:#10b981;--red:#ef4444;--yellow:#f59e0b;}
+  :root{--bg:#05070f;--bg2:#0d1117;--bg3:#161b27;--border:#1e2d45;--text:#e2e8f0;--muted:#94a3b8;--accent:#3b82f6;--green:#10b981;--red:#ef4444;--yellow:#f59e0b;}
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
   a{color:var(--accent);text-decoration:none;}
-  nav{background:rgba(10,14,26,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:16px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  nav{background:rgba(5,7,15,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:16px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
   nav .logo{font-weight:700;font-size:16px;color:var(--text);}
   nav .logo span{color:var(--accent);}
   nav .nav-links{display:flex;gap:24px;align-items:center;}
@@ -83,28 +83,13 @@
   .btn-primary{display:inline-block;background:var(--accent);color:#fff;padding:14px 32px;border-radius:8px;font-weight:700;font-size:15px;transition:opacity 0.2s;}
   .btn-primary:hover{opacity:0.85;color:#fff;}
   .btn-secondary{display:inline-block;background:transparent;color:var(--text);padding:14px 32px;border-radius:8px;font-weight:600;font-size:15px;border:1px solid var(--border);margin-left:12px;}
-  /* SIMULATED RUN */
-  .sim-wrap{background:#0d1117;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:48px;}
-  .sim-head{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:var(--bg3);border-bottom:1px solid var(--border);}
-  .sim-title-bar{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;}
-  .sim-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:blinkdot 2s infinite;}
-  @keyframes blinkdot{0%,100%{opacity:1;}50%{opacity:.3;}}
-  .sim-run-btn{background:transparent;border:1px solid var(--accent);color:var(--accent);padding:5px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;transition:background 0.2s;}
-  .sim-run-btn:hover{background:rgba(0,0,0,0.2);}
-  .sim-log{padding:20px;font-family:'Courier New',monospace;display:flex;flex-direction:column;gap:8px;min-height:80px;}
-  .sim-row{display:flex;gap:12px;align-items:flex-start;font-size:12px;opacity:0;transform:translateY(4px);transition:opacity 0.3s,transform 0.3s;}
-  .sim-row.show{opacity:1;transform:none;}
-  .sim-ts{color:#4a5568;width:80px;flex-shrink:0;padding-top:1px;}
-  .sim-icon{width:16px;flex-shrink:0;}
-  .sim-msg{color:#a0aec0;line-height:1.5;}
-  .sim-msg .hi{color:var(--accent);font-weight:600;}
-  .sim-msg .ok{color:var(--green);}
-  .sim-msg .warn{color:var(--yellow);}
-  .sim-msg .err{color:var(--red);}
-  .sim-bar{padding:14px 20px;border-top:1px solid var(--border);background:rgba(16,185,129,0.05);display:flex;align-items:center;gap:10px;opacity:0;transition:opacity 0.5s;}
-  .sim-bar.show{opacity:1;}
-  .sim-bar-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;}
-  .sim-bar span{font-size:13px;color:var(--green);font-weight:600;}
+
+  /* AUTO-RUN NOTE */
+  .auto-run-note{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:12px;padding:24px 28px;margin-top:48px;display:flex;gap:20px;align-items:flex-start;}
+  .auto-run-icon{font-size:32px;flex-shrink:0;line-height:1;margin-top:2px;}
+  .auto-run-content h4{font-size:14px;font-weight:700;margin-bottom:8px;color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;}
+  .auto-run-content p{font-size:14px;color:var(--muted);line-height:1.7;max-width:640px;}
+  .auto-run-trigger{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;color:var(--text);margin-top:12px;}
   @media(max-width:768px){nav{padding:14px 20px;}.hero{padding:60px 20px;}.section{padding:60px 20px;}.split{grid-template-columns:1fr;}.cta-section{margin:40px 20px;padding:40px 20px;}.h-timeline{flex-direction:column;}}
 </style>
 </head>
@@ -162,25 +147,16 @@
     </div>
   </div>
 
-  <div class="sim-wrap">
-    <div class="sim-head">
-      <div class="sim-title-bar"><span class="sim-dot"></span>🤖 Simulated Proposal Lifecycle · PROP-20260428-A1B2</div>
-      <button class="sim-run-btn" onclick="runSim(this)">▶ Run Simulation</button>
-    </div>
-    <div class="sim-log">
-      <div class="sim-row"><span class="sim-ts">+0h:00:01</span><span class="sim-icon">✓</span><span class="sim-msg">Webhook received: New proposal submitted · Client: <span class="hi">carlos@summitgroup.com</span></span></div>
-      <div class="sim-row"><span class="sim-ts">+0h:00:01</span><span class="sim-icon">✓</span><span class="sim-msg">Generated Proposal ID: <span class="hi">PROP-20260428-A1B2</span> · Logged to Sheets</span></div>
-      <div class="sim-row"><span class="sim-ts">+0h:00:02</span><span class="sim-icon">✓</span><span class="sim-msg">Gmail: <span class="ok">Proposal delivered</span> — Service: Audit · Amount: $4,200</span></div>
-      <div class="sim-row"><span class="sim-ts">+72h:00:00</span><span class="sim-icon">⏳</span><span class="sim-msg">Wait node elapsed · <span class="hi">3-day status check triggered</span></span></div>
-      <div class="sim-row"><span class="sim-ts">+72h:00:01</span><span class="sim-icon">✓</span><span class="sim-msg">Google Sheets: Status check → <span class="warn">PENDING</span> (no client response)</span></div>
-      <div class="sim-row"><span class="sim-ts">+72h:00:02</span><span class="sim-icon">✓</span><span class="sim-msg">Gmail: <span class="warn">Day 3 follow-up nudge</span> sent to carlos@summitgroup.com</span></div>
-      <div class="sim-row"><span class="sim-ts">+144h:00:00</span><span class="sim-icon">⏳</span><span class="sim-msg">Wait node elapsed · <span class="hi">6-day escalation check triggered</span></span></div>
-      <div class="sim-row"><span class="sim-ts">+144h:00:01</span><span class="sim-icon">🚨</span><span class="sim-msg">Status still PENDING · <span class="err">Staff escalation sent</span> with full proposal context</span></div>
-    </div>
-    <div class="sim-bar"><div class="sim-bar-dot"></div><span>✓ Full follow-up sequence executed · Escalated after 6 days with no client response</span></div>
-  </div>
-
 </div>
+
+<div class="auto-run-note">
+    <div class="auto-run-icon">⏳</div>
+    <div class="auto-run-content">
+      <h4>Timer-Based — No Human Needed After Submission</h4>
+      <p>Once a proposal is submitted through the form, n8n takes over entirely. It delivers the proposal instantly, then uses wait nodes to pause and re-check at Day 3 and Day 6. If the client hasn't responded, the appropriate follow-up fires automatically — no calendar reminders, no sticky notes, no remembering to check back.</p>
+      <div class="auto-run-trigger">⏳ Webhook on submit → Wait nodes at Day 3 and Day 6</div>
+    </div>
+  </div>
 
 <hr class="divider" />
 
@@ -275,23 +251,5 @@
   <a href="../forms/proposal.html" class="btn-primary">Send Proposal →</a>
   <a href="../index.html" class="btn-secondary">View All Workflows</a>
 </div>
-<script>
-function runSim(btn){
-  const wrap=btn.closest('.sim-wrap');
-  const rows=wrap.querySelectorAll('.sim-row');
-  const bar=wrap.querySelector('.sim-bar');
-  rows.forEach(r=>r.classList.remove('show'));
-  if(bar)bar.classList.remove('show');
-  btn.textContent='⏳ Running...';btn.disabled=true;
-  rows.forEach((r,i)=>{
-    setTimeout(()=>{
-      r.classList.add('show');
-      if(i===rows.length-1){
-        setTimeout(()=>{if(bar)bar.classList.add('show');btn.textContent='▶ Run Again';btn.disabled=false;},400);
-      }
-    },i*350);
-  });
-}
-</script>
 </body>
 </html>
