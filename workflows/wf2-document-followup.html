@@ -85,6 +85,28 @@
   .btn-primary:hover{opacity:0.85;}
   .btn-secondary{display:inline-block;background:transparent;color:var(--text);padding:14px 32px;border-radius:8px;font-weight:600;font-size:15px;border:1px solid var(--border);margin-left:12px;transition:border-color 0.2s;}
   .btn-secondary:hover{border-color:var(--accent);color:var(--accent);}
+  /* SIMULATED RUN */
+  .sim-wrap{background:#0d1117;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:48px;}
+  .sim-head{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:var(--bg3);border-bottom:1px solid var(--border);}
+  .sim-title-bar{font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;}
+  .sim-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:blinkdot 2s infinite;}
+  @keyframes blinkdot{0%,100%{opacity:1;}50%{opacity:.3;}}
+  .sim-run-btn{background:transparent;border:1px solid var(--accent);color:var(--accent);padding:5px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;transition:background 0.2s;}
+  .sim-run-btn:hover{background:rgba(0,0,0,0.2);}
+  .sim-log{padding:20px;font-family:'Courier New',monospace;display:flex;flex-direction:column;gap:8px;min-height:80px;}
+  .sim-row{display:flex;gap:12px;align-items:flex-start;font-size:12px;opacity:0;transform:translateY(4px);transition:opacity 0.3s,transform 0.3s;}
+  .sim-row.show{opacity:1;transform:none;}
+  .sim-ts{color:#4a5568;width:80px;flex-shrink:0;padding-top:1px;}
+  .sim-icon{width:16px;flex-shrink:0;}
+  .sim-msg{color:#a0aec0;line-height:1.5;}
+  .sim-msg .hi{color:var(--accent);font-weight:600;}
+  .sim-msg .ok{color:var(--green);}
+  .sim-msg .warn{color:var(--yellow);}
+  .sim-msg .err{color:var(--red);}
+  .sim-bar{padding:14px 20px;border-top:1px solid var(--border);background:rgba(16,185,129,0.05);display:flex;align-items:center;gap:10px;opacity:0;transition:opacity 0.5s;}
+  .sim-bar.show{opacity:1;}
+  .sim-bar-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;}
+  .sim-bar span{font-size:13px;color:var(--green);font-weight:600;}
   @media(max-width:768px){nav{padding:14px 20px;}.hero{padding:60px 20px;}.section{padding:60px 20px;}.pros-cons{grid-template-columns:1fr;}.cta-section{margin:40px 20px;padding:40px 20px;}}
 </style>
 </head>
@@ -164,6 +186,24 @@
       </div>
     </div>
   </div>
+
+  <div class="sim-wrap">
+    <div class="sim-head">
+      <div class="sim-title-bar"><span class="sim-dot"></span>🤖 Simulated Daily Run · Monday, April 28 · 9:00 AM</div>
+      <button class="sim-run-btn" onclick="runSim(this)">▶ Run Simulation</button>
+    </div>
+    <div class="sim-log">
+      <div class="sim-row"><span class="sim-ts">09:00:01</span><span class="sim-icon">✓</span><span class="sim-msg">Schedule trigger fired · <span class="hi">Every weekday at 9:00 AM</span></span></div>
+      <div class="sim-row"><span class="sim-ts">09:00:02</span><span class="sim-icon">✓</span><span class="sim-msg">Google Sheets: Fetched <span class="hi">12 client rows</span></span></div>
+      <div class="sim-row"><span class="sim-ts">09:00:02</span><span class="sim-icon">✓</span><span class="sim-msg">Filter applied: <span class="hi">3 clients</span> with status = PENDING · 9 skipped (COMPLETE or DOCS_RECEIVED)</span></div>
+      <div class="sim-row"><span class="sim-ts">09:00:03</span><span class="sim-icon">✓</span><span class="sim-msg"><span class="hi">Meridian Advisory</span> · Day 2 · 📧 <span class="ok">Gentle reminder email sent</span></span></div>
+      <div class="sim-row"><span class="sim-ts">09:00:03</span><span class="sim-icon">✓</span><span class="sim-msg"><span class="hi">Summit Group LLC</span> · Day 4 · ⚠️ <span class="warn">Follow-up nudge sent</span></span></div>
+      <div class="sim-row"><span class="sim-ts">09:00:04</span><span class="sim-icon">🚨</span><span class="sim-msg"><span class="hi">Apex Ventures</span> · Day 7 · <span class="err">Staff escalation alert fired</span> — assigned to ops team</span></div>
+      <div class="sim-row"><span class="sim-ts">09:00:04</span><span class="sim-icon">✓</span><span class="sim-msg">Run complete · <span class="ok">3 emails dispatched</span> · 0 errors · Next run: tomorrow 9:00 AM</span></div>
+    </div>
+    <div class="sim-bar"><div class="sim-bar-dot"></div><span>✓ Workflow completed · 3 clients actioned · 9 clients already on track</span></div>
+  </div>
+
 </div>
 
 <hr class="divider" />
@@ -259,5 +299,23 @@
   <a href="../index.html" class="btn-secondary">View All Workflows</a>
 </div>
 
+<script>
+function runSim(btn){
+  const wrap=btn.closest('.sim-wrap');
+  const rows=wrap.querySelectorAll('.sim-row');
+  const bar=wrap.querySelector('.sim-bar');
+  rows.forEach(r=>r.classList.remove('show'));
+  if(bar)bar.classList.remove('show');
+  btn.textContent='⏳ Running...';btn.disabled=true;
+  rows.forEach((r,i)=>{
+    setTimeout(()=>{
+      r.classList.add('show');
+      if(i===rows.length-1){
+        setTimeout(()=>{if(bar)bar.classList.add('show');btn.textContent='▶ Run Again';btn.disabled=false;},400);
+      }
+    },i*350);
+  });
+}
+</script>
 </body>
 </html>
