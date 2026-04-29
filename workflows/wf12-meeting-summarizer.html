@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WF12 — Meeting Notes Summarizer | Tech Stack Automation</title>
+<style>
+  :root{--bg:#0a0e1a;--bg2:#111827;--bg3:#1a2235;--border:#1e2d45;--text:#e2e8f0;--muted:#94a3b8;--accent:#8b5cf6;--green:#10b981;--red:#ef4444;--yellow:#f59e0b;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+  a{color:var(--accent);text-decoration:none;}
+  nav{background:rgba(10,14,26,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:16px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  nav .logo{font-weight:700;font-size:16px;color:var(--text);}nav .logo span{color:var(--accent);}
+  nav .nav-links{display:flex;gap:24px;align-items:center;}nav .nav-links a{color:var(--muted);font-size:13px;}
+  nav .btn-nav{background:var(--accent);color:#fff!important;padding:8px 16px;border-radius:6px;font-size:13px;font-weight:700;}
+  .hero{background:linear-gradient(135deg,#0a0e1a,#0d0a1f,#0a0e1a);border-bottom:1px solid var(--border);padding:100px 40px 80px;text-align:center;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 50% 50%,rgba(139,92,246,0.07) 0%,transparent 60%);}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);border-radius:100px;padding:6px 16px;font-size:12px;color:var(--accent);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:24px;}
+  .hero h1{font-size:clamp(28px,5vw,52px);font-weight:800;line-height:1.1;max-width:800px;margin:0 auto 20px;}
+  .hero h1 span{color:var(--accent);}
+  .hero p{font-size:18px;color:var(--muted);max-width:560px;margin:0 auto 40px;}
+  .hero-stats{display:flex;gap:48px;justify-content:center;flex-wrap:wrap;}
+  .stat{text-align:center;}.stat-num{font-size:36px;font-weight:800;}.stat-num span{color:var(--accent);}
+  .stat-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;}
+  .section{max-width:1100px;margin:0 auto;padding:80px 40px;}
+  .section-label{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:12px;}
+  .section h2{font-size:clamp(24px,3vw,36px);font-weight:700;margin-bottom:16px;}
+  .section p{color:var(--muted);font-size:16px;max-width:680px;}
+  .divider{border:none;border-top:1px solid var(--border);}
+
+  .output-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px;}
+  .output-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;}
+  .output-card h4{font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;}
+  .output-card p,.output-card li{font-size:13px;color:var(--muted);}
+  .output-card ul{padding-left:16px;}.output-card li{margin-bottom:4px;}
+  .action-item{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin-bottom:8px;font-size:13px;}
+  .action-item .task{color:var(--text);font-weight:500;}
+  .action-item .meta{color:var(--muted);font-size:11px;margin-top:4px;}
+
+  .flow{display:flex;flex-direction:column;gap:0;margin-top:48px;position:relative;}
+  .flow::before{content:'';position:absolute;left:23px;top:12px;bottom:12px;width:2px;background:linear-gradient(to bottom,var(--accent),transparent);}
+  .flow-step{display:flex;gap:24px;align-items:flex-start;padding:24px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;transition:border-color 0.2s;position:relative;z-index:1;}
+  .flow-step:hover{border-color:var(--accent);}
+  .step-num{width:48px;height:48px;border-radius:50%;background:rgba(139,92,246,0.12);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+  .step-content h4{font-size:16px;font-weight:600;margin-bottom:4px;}
+  .step-content p{font-size:14px;color:var(--muted);}
+  .tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:0.08em;margin-top:8px;background:rgba(139,92,246,0.1);color:var(--accent);}
+
+  .impact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-top:48px;}
+  .impact-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:28px;}
+  .impact-num{font-size:40px;font-weight:800;color:var(--accent);line-height:1;}
+  .impact-label{font-size:14px;color:var(--muted);margin-top:8px;}
+  .pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px;}
+  .pros,.cons{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:28px;}
+  .pros{border-top:3px solid var(--green);}.pros h3{color:var(--green);font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:20px;}
+  .cons{border-top:3px solid var(--yellow);}.cons h3{color:var(--yellow);font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:20px;}
+  .check-list{list-style:none;display:flex;flex-direction:column;gap:12px;}
+  .check-list li{font-size:14px;color:var(--muted);display:flex;gap:10px;line-height:1.5;}
+  .check-list li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;}
+  .warn-list{list-style:none;display:flex;flex-direction:column;gap:12px;}
+  .warn-list li{font-size:14px;color:var(--muted);display:flex;gap:10px;line-height:1.5;}
+  .warn-list li::before{content:'⚠';color:var(--yellow);flex-shrink:0;}
+  .cost-table{width:100%;border-collapse:collapse;margin-top:40px;}
+  .cost-table th{background:var(--bg3);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:0.1em;padding:14px 20px;text-align:left;border-bottom:1px solid var(--border);}
+  .cost-table td{padding:16px 20px;border-bottom:1px solid var(--border);font-size:14px;}
+  .cost-table tr:last-child td{border-bottom:none;}
+  .cost-table .highlight{background:rgba(139,92,246,0.04);}
+  .price{font-weight:700;font-size:16px;}.green{color:var(--green);}.red{color:var(--red);}
+  .badge{display:inline-flex;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700;}
+  .badge-green{background:rgba(16,185,129,0.1);color:var(--green);}
+  .badge-red{background:rgba(239,68,68,0.1);color:var(--red);}
+  .who-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:40px;}
+  .who-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;}
+  .who-icon{font-size:28px;margin-bottom:12px;}
+  .who-card h4{font-size:14px;font-weight:600;margin-bottom:6px;}
+  .who-card p{font-size:12px;color:var(--muted);}
+  .cta-section{background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(139,92,246,0.02));border:1px solid rgba(139,92,246,0.2);border-radius:20px;padding:60px 40px;text-align:center;margin:80px 40px;}
+  .cta-section h2{font-size:32px;font-weight:700;margin-bottom:12px;}
+  .cta-section p{color:var(--muted);margin-bottom:32px;}
+  .btn-primary{display:inline-block;background:var(--accent);color:#fff;padding:14px 32px;border-radius:8px;font-weight:700;font-size:15px;transition:opacity 0.2s;}
+  .btn-primary:hover{opacity:0.85;color:#fff;}
+  .btn-secondary{display:inline-block;background:transparent;color:var(--text);padding:14px 32px;border-radius:8px;font-weight:600;font-size:15px;border:1px solid var(--border);margin-left:12px;}
+  @media(max-width:768px){nav{padding:14px 20px;}.hero{padding:60px 20px;}.section{padding:60px 20px;}.pros-cons,.output-grid{grid-template-columns:1fr;}.cta-section{margin:40px 20px;padding:40px 20px;}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">Tech Stack <span>Automation</span></div>
+  <div class="nav-links">
+    <a href="../index.html">← All Workflows</a>
+    <a href="../forms/meeting.html" class="btn-nav">Summarize Meeting →</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">WF12 · AI Meeting Intelligence</div>
+  <h1>Paste Raw Notes.<br/>Get a <span>Structured Summary</span> Emailed to Everyone.</h1>
+  <p>GPT-4o reads your unstructured meeting notes and extracts decisions, action items with owners and due dates, next steps, and follow-up date — then emails the structured summary to all attendees automatically.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num"><span>GPT</span>-4o</div><div class="stat-label">AI Engine</div></div>
+    <div class="stat"><div class="stat-num"><span>6</span></div><div class="stat-label">Output Sections</div></div>
+    <div class="stat"><div class="stat-num"><span>&lt;60</span>s</div><div class="stat-label">Notes to Summary</div></div>
+    <div class="stat"><div class="stat-num"><span>All</span></div><div class="stat-label">Attendees Auto-Notified</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">What GPT-4o Extracts</div>
+  <h2>Six Structured Outputs From Any Raw Notes</h2>
+  <p>It doesn't matter how messy the notes are. GPT-4o understands context and produces clean, structured output every time.</p>
+
+  <div class="output-grid">
+    <div class="output-card">
+      <h4>📋 Summary</h4>
+      <p>2–3 sentence plain-language recap of what the meeting covered and the primary outcome</p>
+    </div>
+    <div class="output-card">
+      <h4>✅ Key Decisions</h4>
+      <p>Bulleted list of every decision made during the meeting — the ones that actually change something</p>
+    </div>
+    <div class="output-card">
+      <h4>📌 Action Items</h4>
+      <div class="action-item"><div class="task">Finalize proposal for Summit Group</div><div class="meta">Owner: Sarah Chen · Due: May 5</div></div>
+      <div class="action-item"><div class="task">Send updated invoice to Apex</div><div class="meta">Owner: Marcus Lee · Due: April 30</div></div>
+    </div>
+    <div class="output-card">
+      <h4>🔭 Next Steps</h4>
+      <p>What needs to happen before the next meeting — ordered by priority</p>
+    </div>
+    <div class="output-card">
+      <h4>📅 Follow-Up Date</h4>
+      <p>Suggested date for the next check-in or review meeting, inferred from the conversation</p>
+    </div>
+    <div class="output-card">
+      <h4>😊 Meeting Mood</h4>
+      <p>GPT-4o reads the emotional tone of the notes — aligned, tense, productive, or uncertain — for leadership awareness</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<div class="section">
+  <div class="section-label">The Flow</div>
+  <h2>Submit → Summarize → Distribute</h2>
+  <div class="flow">
+    <div class="flow-step"><div class="step-num">📝</div><div class="step-content"><h4>Paste Raw Meeting Notes</h4><p>Dump everything — stream of consciousness, bullet points, half-sentences. Format doesn't matter.</p><span class="tag">Webhook Trigger</span></div></div>
+    <div class="flow-step"><div class="step-num">🤖</div><div class="step-content"><h4>GPT-4o Processes the Notes</h4><p>Extracts all 6 structured outputs in one API call. Handles messy input, multiple speakers, and ambiguous context.</p><span class="tag">OpenAI GPT-4o</span></div></div>
+    <div class="flow-step"><div class="step-num">📧</div><div class="step-content"><h4>Summary Emailed to All Attendees</h4><p>Every email address entered at submission receives the full structured summary within 60 seconds of the meeting ending.</p><span class="tag">Gmail</span></div></div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<div class="section">
+  <div class="section-label">Why It Matters</div>
+  <h2>Action Items That Live in Notes Never Get Done</h2>
+  <p>Research shows 47% of meeting action items are never completed because they're buried in someone's notes that only one person can see. This workflow pushes structured accountability to everyone.</p>
+  <div class="impact-grid">
+    <div class="impact-card"><div class="impact-num">47%</div><div class="impact-label">Of action items never completed when buried in personal notes</div></div>
+    <div class="impact-card"><div class="impact-num">&lt;60s</div><div class="impact-label">From notes submission to summary in every attendee's inbox</div></div>
+    <div class="impact-card"><div class="impact-num">100%</div><div class="impact-label">Of attendees get the same version — no version control, no "I didn't get that"</div></div>
+    <div class="impact-card"><div class="impact-num">0</div><div class="impact-label">Manual formatting or writeup time — GPT-4o handles all structure</div></div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<div class="section">
+  <div class="section-label">Pros & Considerations</div>
+  <h2>Honest Assessment</h2>
+  <div class="pros-cons">
+    <div class="pros">
+      <h3>✓ Advantages</h3>
+      <ul class="check-list">
+        <li>Works on any meeting type — strategy, client calls, team standups, board meetings</li>
+        <li>Handles messy, unstructured input — doesn't require clean notes to produce clean output</li>
+        <li>All attendees receive the same document — eliminates "who was supposed to do what?" confusion</li>
+        <li>Action items include owner and due date — accountability built in, not assumed</li>
+        <li>Meeting mood field gives leadership a quick pulse on team dynamics</li>
+        <li>Under 60 seconds — summary arrives before anyone has left the building</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h3>⚠ Considerations</h3>
+      <ul class="warn-list">
+        <li>GPT-4o may miss action items if notes are extremely sparse or cryptic</li>
+        <li>Owner attribution only works if names are mentioned in the notes</li>
+        <li>No integration with task managers (Asana, Monday) in base version — action items are email-only</li>
+        <li>GPT-4o API cost: ~$0.02–$0.05 per meeting summary</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<div class="section">
+  <div class="section-label">Cost Comparison</div>
+  <h2>What You're Replacing</h2>
+  <table class="cost-table">
+    <thead><tr><th>Solution</th><th>Monthly Cost</th><th>Auto Summary to All Attendees</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Otter.ai (Pro)</strong></td><td class="price red">$17–$30/user/mo</td><td>Transcription only</td><td><span class="badge badge-red">Not structured output</span></td></tr>
+      <tr><td><strong>Fireflies.ai</strong></td><td class="price red">$10–$19/user/mo</td><td>Yes, with AI</td><td><span class="badge badge-red">Per-seat fees</span></td></tr>
+      <tr><td><strong>Meeting assistant (EA)</strong></td><td class="price red">$500–$1,500/mo</td><td>Manual</td><td><span class="badge badge-red">Human bottleneck</span></td></tr>
+      <tr class="highlight"><td><strong>TSA — n8n + GPT-4o</strong></td><td class="price green">~$26/mo total</td><td>Yes — all attendees, &lt;60s</td><td><span class="badge badge-green">Best value</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="divider"/>
+
+<div class="section">
+  <div class="section-label">Who This Is For</div>
+  <h2>Perfect Fit Profile</h2>
+  <div class="who-grid">
+    <div class="who-card"><div class="who-icon">👥</div><h4>Meeting-Heavy Teams</h4><p>Teams running 5+ meetings per week where follow-through on action items is a chronic problem</p></div>
+    <div class="who-card"><div class="who-icon">🤝</div><h4>Client-Facing Roles</h4><p>Consultants, account managers, and project managers who need a paper trail after every client call</p></div>
+    <div class="who-card"><div class="who-icon">🏢</div><h4>Leadership Teams</h4><p>Executives whose meetings generate decisions that need to cascade to multiple teams</p></div>
+    <div class="who-card"><div class="who-icon">🌐</div><h4>Remote Teams</h4><p>Distributed teams where "who was supposed to handle that?" is a recurring post-meeting conversation</p></div>
+  </div>
+</div>
+
+<div class="cta-section">
+  <h2>Turn Your Last Meeting Into a Structured Summary</h2>
+  <p>Paste any meeting notes — messy, rough, incomplete. See what GPT-4o produces and have it emailed to your attendees in under 60 seconds.</p>
+  <a href="../forms/meeting.html" class="btn-primary">Summarize a Meeting →</a>
+  <a href="../index.html" class="btn-secondary">View All Workflows</a>
+</div>
+</body>
+</html>

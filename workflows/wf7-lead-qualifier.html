@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WF7 — AI Lead Qualifier Chatbot | Tech Stack Automation</title>
+<style>
+  :root{--bg:#0a0e1a;--bg2:#111827;--bg3:#1a2235;--border:#1e2d45;--text:#e2e8f0;--muted:#94a3b8;--accent:#6366f1;--green:#10b981;--red:#ef4444;--yellow:#f59e0b;--hot:#ef4444;--warm:#f59e0b;--cold:#3b82f6;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+  a{color:var(--accent);text-decoration:none;}
+  nav{background:rgba(10,14,26,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:16px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  nav .logo{font-weight:700;font-size:16px;color:var(--text);}nav .logo span{color:var(--accent);}
+  nav .nav-links{display:flex;gap:24px;align-items:center;}nav .nav-links a{color:var(--muted);font-size:13px;}
+  nav .btn-nav{background:var(--accent);color:#fff!important;padding:8px 16px;border-radius:6px;font-size:13px;font-weight:700;}
+  .hero{background:linear-gradient(135deg,#0a0e1a,#0d0a1f,#0a0e1a);border-bottom:1px solid var(--border);padding:100px 40px 80px;text-align:center;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 50% 50%,rgba(99,102,241,0.08) 0%,transparent 60%);}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);border-radius:100px;padding:6px 16px;font-size:12px;color:var(--accent);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:24px;}
+  .hero h1{font-size:clamp(28px,5vw,52px);font-weight:800;line-height:1.1;max-width:800px;margin:0 auto 20px;}
+  .hero h1 span{color:var(--accent);}
+  .hero p{font-size:18px;color:var(--muted);max-width:560px;margin:0 auto 40px;}
+  .hero-stats{display:flex;gap:48px;justify-content:center;flex-wrap:wrap;}
+  .stat{text-align:center;}.stat-num{font-size:36px;font-weight:800;}.stat-num span{color:var(--accent);}
+  .stat-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;}
+  .section{max-width:1100px;margin:0 auto;padding:80px 40px;}
+  .section-label{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:12px;}
+  .section h2{font-size:clamp(24px,3vw,36px);font-weight:700;margin-bottom:16px;}
+  .section p{color:var(--muted);font-size:16px;max-width:680px;}
+  .divider{border:none;border-top:1px solid var(--border);}
+
+  /* TIER CARDS */
+  .tier-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px;}
+  .tier{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:28px;text-align:center;}
+  .tier.hot{border-top:4px solid var(--hot);}
+  .tier.warm{border-top:4px solid var(--warm);}
+  .tier.cold{border-top:4px solid var(--cold);}
+  .tier-score{font-size:48px;font-weight:900;line-height:1;}
+  .tier.hot .tier-score{color:var(--hot);}
+  .tier.warm .tier-score{color:var(--warm);}
+  .tier.cold .tier-score{color:var(--cold);}
+  .tier-name{font-size:20px;font-weight:700;margin:8px 0;}
+  .tier.hot .tier-name{color:var(--hot);}
+  .tier.warm .tier-name{color:var(--warm);}
+  .tier.cold .tier-name{color:var(--cold);}
+  .tier-action{font-size:13px;color:var(--muted);margin-top:12px;}
+
+  /* CHAT PREVIEW */
+  .chat-preview{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:48px;}
+  .chat-header{background:linear-gradient(135deg,#4f46e5,#6366f1);padding:16px 20px;display:flex;align-items:center;gap:12px;}
+  .chat-avatar{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;}
+  .chat-title{color:#fff;font-weight:600;font-size:14px;}
+  .chat-sub{color:rgba(255,255,255,0.7);font-size:12px;}
+  .chat-body{padding:20px;display:flex;flex-direction:column;gap:12px;}
+  .msg{max-width:70%;padding:12px 16px;border-radius:12px;font-size:13px;line-height:1.5;}
+  .msg.bot{background:var(--bg3);border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:4px;}
+  .msg.user{background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.3);align-self:flex-end;border-bottom-right-radius:4px;color:var(--text);}
+
+  .score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:40px;}
+  .score-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;display:flex;justify-content:space-between;align-items:center;}
+  .score-label{font-size:13px;color:var(--muted);}
+  .score-val{font-size:16px;font-weight:700;color:var(--accent);}
+
+  .impact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-top:48px;}
+  .impact-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:28px;}
+  .impact-num{font-size:40px;font-weight:800;color:var(--accent);line-height:1;}
+  .impact-label{font-size:14px;color:var(--muted);margin-top:8px;}
+
+  .pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px;}
+  .pros,.cons{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:28px;}
+  .pros{border-top:3px solid var(--green);}.pros h3{color:var(--green);font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:20px;}
+  .cons{border-top:3px solid var(--yellow);}.cons h3{color:var(--yellow);font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:20px;}
+  .check-list{list-style:none;display:flex;flex-direction:column;gap:12px;}
+  .check-list li{font-size:14px;color:var(--muted);display:flex;gap:10px;line-height:1.5;}
+  .check-list li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;}
+  .warn-list{list-style:none;display:flex;flex-direction:column;gap:12px;}
+  .warn-list li{font-size:14px;color:var(--muted);display:flex;gap:10px;line-height:1.5;}
+  .warn-list li::before{content:'⚠';color:var(--yellow);flex-shrink:0;}
+  .cost-table{width:100%;border-collapse:collapse;margin-top:40px;}
+  .cost-table th{background:var(--bg3);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:0.1em;padding:14px 20px;text-align:left;border-bottom:1px solid var(--border);}
+  .cost-table td{padding:16px 20px;border-bottom:1px solid var(--border);font-size:14px;}
+  .cost-table tr:last-child td{border-bottom:none;}
+  .cost-table .highlight{background:rgba(99,102,241,0.04);}
+  .price{font-weight:700;font-size:16px;}.green{color:var(--green);}.red{color:var(--red);}
+  .badge{display:inline-flex;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700;}
+  .badge-green{background:rgba(16,185,129,0.1);color:var(--green);}
+  .badge-red{background:rgba(239,68,68,0.1);color:var(--red);}
+  .who-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:40px;}
+  .who-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;}
+  .who-icon{font-size:28px;margin-bottom:12px;}
+  .who-card h4{font-size:14px;font-weight:600;margin-bottom:6px;}
+  .who-card p{font-size:12px;color:var(--muted);}
+  .cta-section{background:linear-gradient(135deg,rgba(99,102,241,0.1),rgba(99,102,241,0.02));border:1px solid rgba(99,102,241,0.2);border-radius:20px;padding:60px 40px;text-align:center;margin:80px 40px;}
+  .cta-section h2{font-size:32px;font-weight:700;margin-bottom:12px;}
+  .cta-section p{color:var(--muted);margin-bottom:32px;}
+  .btn-primary{display:inline-block;background:var(--accent);color:#fff;padding:14px 32px;border-radius:8px;font-weight:700;font-size:15px;transition:opacity 0.2s;}
+  .btn-primary:hover{opacity:0.85;color:#fff;}
+  .btn-secondary{display:inline-block;background:transparent;color:var(--text);padding:14px 32px;border-radius:8px;font-weight:600;font-size:15px;border:1px solid var(--border);margin-left:12px;}
+  @media(max-width:768px){nav{padding:14px 20px;}.hero{padding:60px 20px;}.section{padding:60px 20px;}.pros-cons,.tier-row{grid-template-columns:1fr;}.cta-section{margin:40px 20px;padding:40px 20px;}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">Tech Stack <span>Automation</span></div>
+  <div class="nav-links">
+    <a href="../index.html">← All Workflows</a>
+    <a href="../index.html" class="btn-nav">Request Demo →</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">WF7 · AI Sales Intelligence</div>
+  <h1>A GPT-4o Chatbot That<br/><span>Qualifies Every Lead</span> for You</h1>
+  <p>A live conversational chatbot collects lead data through natural conversation, scores each lead HOT/WARM/COLD, logs them to your CRM, and alerts your sales team — all without a human rep involved.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num"><span>GPT</span>-4o</div><div class="stat-label">AI Engine</div></div>
+    <div class="stat"><div class="stat-num"><span>8</span></div><div class="stat-label">Data Points Collected</div></div>
+    <div class="stat"><div class="stat-num"><span>3</span></div><div class="stat-label">Lead Tiers</div></div>
+    <div class="stat"><div class="stat-num"><span>24/7</span></div><div class="stat-label">Always Available</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">How It Works</div>
+  <h2>Live Chat That Actually Qualifies</h2>
+  <p>The chatbot doesn't just collect a form — it holds a real conversation. GPT-4o asks follow-up questions, handles ambiguous answers, and extracts structured lead data automatically.</p>
+
+  <div class="chat-preview">
+    <div class="chat-header">
+      <div class="chat-avatar">🤖</div>
+      <div><div class="chat-title">TSA Lead Qualification Bot</div><div class="chat-sub">Powered by GPT-4o</div></div>
+    </div>
+    <div class="chat-body">
+      <div class="msg bot">Hi! I'm here to learn about your business and see how we can help. What's your name and company?</div>
+      <div class="msg user">I'm Sarah Chen, CFO at Meridian Group — we have about 120 employees.</div>
+      <div class="msg bot">Great to meet you, Sarah. What service are you most interested in — tax advisory, audit, bookkeeping, or financial consulting?</div>
+      <div class="msg user">Probably tax advisory. We're doing around $8M in annual revenue and our current CPA firm is way behind.</div>
+      <div class="msg bot">Understood. What's your timeline — are you looking to switch providers in the next 30 days, or still exploring your options?</div>
+      <div class="msg user">We need someone by end of next month — Q2 close is coming up.</div>
+      <div class="msg bot" style="background:rgba(99,102,241,0.08);border-color:rgba(99,102,241,0.3);">✅ Got everything I need. Our team will reach out within 1 business day. <strong>Lead Score: 85 — HOT 🔥</strong></div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<div class="section">
+  <div class="section-label">Lead Scoring System</div>
+  <h2>HOT / WARM / COLD — Objectively Scored</h2>
+  <p>Every lead receives a score based on 8 weighted criteria. No gut feeling, no bias — just a consistent, repeatable system.</p>
+
+  <div class="score-grid">
+    <div class="score-item"><span class="score-label">Tax Advisory or Audit interest</span><span class="score-val">+30 pts</span></div>
+    <div class="score-item"><span class="score-label">Revenue over $1M/year</span><span class="score-val">+30 pts</span></div>
+    <div class="score-item"><span class="score-label">50+ employees</span><span class="score-val">+20 pts</span></div>
+    <div class="score-item"><span class="score-label">Urgent timeline (&lt;30 days)</span><span class="score-val">+25 pts</span></div>
+    <div class="score-item"><span class="score-label">Company name provided</span><span class="score-val">+10 pts</span></div>
+    <div class="score-item"><span class="score-label">"Just researching" response</span><span class="score-val">−20 pts</span></div>
+  </div>
+
+  <div class="tier-row" style="margin-top:32px;">
+    <div class="tier hot"><div class="tier-score">70+</div><div class="tier-name">🔥 HOT</div><div class="tier-action">Immediate sales alert + priority CRM entry</div></div>
+    <div class="tier warm"><div class="tier-score">40–69</div><div class="tier-name">🌡️ WARM</div><div class="tier-action">Nurture email + standard CRM logging</div></div>
+    <div class="tier cold"><div class="tier-score">&lt;40</div><div class="tier-name">❄️ COLD</div><div class="tier-action">CRM logged only — no immediate outreach</div></div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<div class="section">
+  <div class="section-label">Why It Matters</div>
+  <h2>Your Best Sales Rep, Available 24/7</h2>
+  <div class="impact-grid">
+    <div class="impact-card"><div class="impact-num">24/7</div><div class="impact-label">Lead qualification — every inquiry handled even outside business hours</div></div>
+    <div class="impact-card"><div class="impact-num">100%</div><div class="impact-label">Of leads scored consistently — no rep having a bad day</div></div>
+    <div class="impact-card"><div class="impact-num">$0</div><div class="impact-label">SDR cost for initial qualification — GPT-4o handles the first touchpoint</div></div>
+    <div class="impact-card"><div class="impact-num">8</div><div class="impact-label">Data points captured per lead — name, email, phone, company, service, revenue, size, timeline</div></div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<div class="section">
+  <div class="section-label">Pros & Considerations</div>
+  <h2>Honest Assessment</h2>
+  <div class="pros-cons">
+    <div class="pros">
+      <h3>✓ Advantages</h3>
+      <ul class="check-list">
+        <li>Qualifies leads around the clock — no after-hours missed opportunities</li>
+        <li>Consistent scoring — every lead measured the same way, every time</li>
+        <li>Natural conversation — GPT-4o handles messy, real-world answers gracefully</li>
+        <li>HOT leads get instant sales alerts — no time wasted on cold prospects first</li>
+        <li>Full CRM entry on every lead — searchable, auditable, exportable</li>
+        <li>Replaces expensive SDR software at a fraction of the cost</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h3>⚠ Considerations</h3>
+      <ul class="warn-list">
+        <li>GPT-4o API costs apply per conversation — approximately $0.01–$0.05 per lead chat</li>
+        <li>Chatbot won't handle complex objections or competitor comparisons as well as a trained rep</li>
+        <li>Requires n8n Chat Trigger — needs to be embedded in your website or used via n8n's hosted chat URL</li>
+        <li>Scoring weights are fixed — adjusting criteria requires editing the workflow</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<div class="section">
+  <div class="section-label">Cost Comparison</div>
+  <h2>What You're Replacing</h2>
+  <table class="cost-table">
+    <thead><tr><th>Solution</th><th>Monthly Cost</th><th>AI Qualification</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Drift / Intercom (AI)</strong></td><td class="price red">$400–$1,500/mo</td><td>Yes</td><td><span class="badge badge-red">Prohibitive for SMB</span></td></tr>
+      <tr><td><strong>HubSpot Chatbot</strong></td><td class="price red">$50–$400/mo</td><td>Basic</td><td><span class="badge badge-red">Rule-based only</span></td></tr>
+      <tr><td><strong>SDR Salary (part-time)</strong></td><td class="price red">$2,000–$4,000/mo</td><td>Human</td><td><span class="badge badge-red">Doesn't scale</span></td></tr>
+      <tr class="highlight"><td><strong>TSA — n8n + GPT-4o</strong></td><td class="price green">~$30/mo total</td><td>Full GPT-4o</td><td><span class="badge badge-green">Best value</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="divider"/>
+
+<div class="section">
+  <div class="section-label">Who This Is For</div>
+  <h2>Perfect Fit Profile</h2>
+  <div class="who-grid">
+    <div class="who-card"><div class="who-icon">🚀</div><h4>High-Volume Lead Sources</h4><p>Businesses running paid ads or SEO campaigns that generate 20+ inquiries per week</p></div>
+    <div class="who-card"><div class="who-icon">💼</div><h4>Professional Services</h4><p>Firms where lead quality varies wildly and time-to-response directly impacts close rate</p></div>
+    <div class="who-card"><div class="who-icon">🌙</div><h4>After-Hours Businesses</h4><p>Any company that misses leads that come in outside 9–5 business hours</p></div>
+    <div class="who-card"><div class="who-icon">📊</div><h4>Sales Teams Without SDRs</h4><p>Small sales orgs where AEs are doing their own prospecting and need triage help</p></div>
+  </div>
+</div>
+
+<div class="cta-section">
+  <h2>Replace Your Lead Form With a Conversation</h2>
+  <p>Most lead forms convert at 2–3%. Conversational AI qualifiers convert at 5–8% — and the leads arrive pre-scored and ready to close.</p>
+  <a href="../index.html" class="btn-primary">Request a Demo →</a>
+  <a href="../index.html" class="btn-secondary">View All Workflows</a>
+</div>
+</body>
+</html>

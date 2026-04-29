@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WF10 — Weekly KPI Check-In | Tech Stack Automation</title>
+<style>
+  :root{--bg:#0a0e1a;--bg2:#111827;--bg3:#1a2235;--border:#1e2d45;--text:#e2e8f0;--muted:#94a3b8;--accent:#f59e0b;--green:#10b981;--red:#ef4444;--yellow:#f59e0b;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+  a{color:var(--accent);text-decoration:none;}
+  nav{background:rgba(10,14,26,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:16px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  nav .logo{font-weight:700;font-size:16px;color:var(--text);}nav .logo span{color:var(--accent);}
+  nav .nav-links{display:flex;gap:24px;align-items:center;}nav .nav-links a{color:var(--muted);font-size:13px;}
+  nav .btn-nav{background:var(--accent);color:#000!important;padding:8px 16px;border-radius:6px;font-size:13px;font-weight:700;}
+  .hero{background:linear-gradient(135deg,#0a0e1a,#1a1000,#0a0e1a);border-bottom:1px solid var(--border);padding:100px 40px 80px;text-align:center;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 50% 50%,rgba(245,158,11,0.07) 0%,transparent 60%);}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:100px;padding:6px 16px;font-size:12px;color:var(--accent);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:24px;}
+  .hero h1{font-size:clamp(28px,5vw,52px);font-weight:800;line-height:1.1;max-width:800px;margin:0 auto 20px;}
+  .hero h1 span{color:var(--accent);}
+  .hero p{font-size:18px;color:var(--muted);max-width:560px;margin:0 auto 40px;}
+  .hero-stats{display:flex;gap:48px;justify-content:center;flex-wrap:wrap;}
+  .stat{text-align:center;}.stat-num{font-size:36px;font-weight:800;}.stat-num span{color:var(--accent);}
+  .stat-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;}
+  .section{max-width:1100px;margin:0 auto;padding:80px 40px;}
+  .section-label{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:12px;}
+  .section h2{font-size:clamp(24px,3vw,36px);font-weight:700;margin-bottom:16px;}
+  .section p{color:var(--muted);font-size:16px;max-width:680px;}
+  .divider{border:none;border-top:1px solid var(--border);}
+
+  /* KPI PREVIEW */
+  .kpi-preview{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:48px;}
+  .kpi-header{background:linear-gradient(135deg,#92400e,#f59e0b);padding:24px 28px;}
+  .kpi-header h3{color:#fff;font-size:16px;margin-bottom:4px;}
+  .kpi-header p{color:rgba(255,255,255,0.7);font-size:13px;}
+  .kpi-body{padding:28px;display:flex;flex-direction:column;gap:16px;}
+  .kpi-item{display:flex;align-items:center;gap:16px;}
+  .kpi-label{font-size:14px;font-weight:600;flex:1;}
+  .kpi-bar-wrap{flex:2;background:var(--bg3);border-radius:100px;height:10px;overflow:hidden;}
+  .kpi-bar{height:100%;border-radius:100px;}
+  .kpi-bar.on-track{background:var(--green);}
+  .kpi-bar.behind{background:var(--red);}
+  .kpi-pct{font-size:13px;font-weight:700;width:48px;text-align:right;}
+  .kpi-pct.on-track{color:var(--green);}
+  .kpi-pct.behind{color:var(--red);}
+  .kpi-flag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;}
+  .kpi-flag.on-track{background:rgba(16,185,129,0.1);color:var(--green);}
+  .kpi-flag.behind{background:rgba(239,68,68,0.1);color:var(--red);}
+
+  .impact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-top:48px;}
+  .impact-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:28px;}
+  .impact-num{font-size:40px;font-weight:800;color:var(--accent);line-height:1;}
+  .impact-label{font-size:14px;color:var(--muted);margin-top:8px;}
+  .pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px;}
+  .pros,.cons{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:28px;}
+  .pros{border-top:3px solid var(--green);}.pros h3{color:var(--green);font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:20px;}
+  .cons{border-top:3px solid var(--yellow);}.cons h3{color:var(--yellow);font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:20px;}
+  .check-list{list-style:none;display:flex;flex-direction:column;gap:12px;}
+  .check-list li{font-size:14px;color:var(--muted);display:flex;gap:10px;line-height:1.5;}
+  .check-list li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;}
+  .warn-list{list-style:none;display:flex;flex-direction:column;gap:12px;}
+  .warn-list li{font-size:14px;color:var(--muted);display:flex;gap:10px;line-height:1.5;}
+  .warn-list li::before{content:'⚠';color:var(--yellow);flex-shrink:0;}
+  .cost-table{width:100%;border-collapse:collapse;margin-top:40px;}
+  .cost-table th{background:var(--bg3);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:0.1em;padding:14px 20px;text-align:left;border-bottom:1px solid var(--border);}
+  .cost-table td{padding:16px 20px;border-bottom:1px solid var(--border);font-size:14px;}
+  .cost-table tr:last-child td{border-bottom:none;}
+  .cost-table .highlight{background:rgba(245,158,11,0.04);}
+  .price{font-weight:700;font-size:16px;}.green{color:var(--green);}.red{color:var(--red);}
+  .badge{display:inline-flex;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700;}
+  .badge-green{background:rgba(16,185,129,0.1);color:var(--green);}
+  .badge-red{background:rgba(239,68,68,0.1);color:var(--red);}
+  .who-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:40px;}
+  .who-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;}
+  .who-icon{font-size:28px;margin-bottom:12px;}
+  .who-card h4{font-size:14px;font-weight:600;margin-bottom:6px;}
+  .who-card p{font-size:12px;color:var(--muted);}
+  .cta-section{background:linear-gradient(135deg,rgba(245,158,11,0.08),rgba(245,158,11,0.02));border:1px solid rgba(245,158,11,0.2);border-radius:20px;padding:60px 40px;text-align:center;margin:80px 40px;}
+  .cta-section h2{font-size:32px;font-weight:700;margin-bottom:12px;}
+  .cta-section p{color:var(--muted);margin-bottom:32px;}
+  .btn-primary{display:inline-block;background:var(--accent);color:#000;padding:14px 32px;border-radius:8px;font-weight:700;font-size:15px;transition:opacity 0.2s;}
+  .btn-primary:hover{opacity:0.85;}
+  .btn-secondary{display:inline-block;background:transparent;color:var(--text);padding:14px 32px;border-radius:8px;font-weight:600;font-size:15px;border:1px solid var(--border);margin-left:12px;}
+  @media(max-width:768px){nav{padding:14px 20px;}.hero{padding:60px 20px;}.section{padding:60px 20px;}.pros-cons{grid-template-columns:1fr;}.cta-section{margin:40px 20px;padding:40px 20px;}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">Tech Stack <span>Automation</span></div>
+  <div class="nav-links">
+    <a href="../index.html">← All Workflows</a>
+    <a href="../index.html" class="btn-nav">Request Demo →</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">WF10 · Business Intelligence</div>
+  <h1>Every Monday, Know<br/><span>Exactly Where Every Goal Stands</span></h1>
+  <p>Automatically reads your goal sheet, calculates percent-complete for each KPI, flags anything behind target in red, and emails a visual progress report to your team — before the week starts.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num"><span>52</span></div><div class="stat-label">Reports Per Year</div></div>
+    <div class="stat"><div class="stat-num"><span>8AM</span></div><div class="stat-label">Every Monday</div></div>
+    <div class="stat"><div class="stat-num"><span>&lt;70</span>%</div><div class="stat-label">Flags Behind Goals in Red</div></div>
+    <div class="stat"><div class="stat-num"><span>0</span>h</div><div class="stat-label">Manual Prep Time</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">What It Does</div>
+  <h2>A Visual KPI Report — Every Monday, Automatic</h2>
+  <p>The workflow reads your Goals sheet, calculates progress percentage for each metric, and generates a color-coded HTML report with progress bars.</p>
+
+  <div class="kpi-preview">
+    <div class="kpi-header">
+      <h3>📊 Weekly KPI Report — Week of April 28, 2026</h3>
+      <p>Generated Monday 8:00 AM · Tech Stack Automation</p>
+    </div>
+    <div class="kpi-body">
+      <div class="kpi-item">
+        <span class="kpi-label">Monthly Revenue</span>
+        <div class="kpi-bar-wrap"><div class="kpi-bar on-track" style="width:87%"></div></div>
+        <span class="kpi-pct on-track">87%</span>
+        <span class="kpi-flag on-track">ON TRACK</span>
+      </div>
+      <div class="kpi-item">
+        <span class="kpi-label">New Clients Onboarded</span>
+        <div class="kpi-bar-wrap"><div class="kpi-bar on-track" style="width:75%"></div></div>
+        <span class="kpi-pct on-track">75%</span>
+        <span class="kpi-flag on-track">ON TRACK</span>
+      </div>
+      <div class="kpi-item">
+        <span class="kpi-label">Proposals Sent</span>
+        <div class="kpi-bar-wrap"><div class="kpi-bar behind" style="width:52%"></div></div>
+        <span class="kpi-pct behind">52%</span>
+        <span class="kpi-flag behind">BEHIND</span>
+      </div>
+      <div class="kpi-item">
+        <span class="kpi-label">Client Satisfaction Score</span>
+        <div class="kpi-bar-wrap"><div class="kpi-bar on-track" style="width:94%"></div></div>
+        <span class="kpi-pct on-track">94%</span>
+        <span class="kpi-flag on-track">ON TRACK</span>
+      </div>
+      <div class="kpi-item">
+        <span class="kpi-label">Expense Budget Remaining</span>
+        <div class="kpi-bar-wrap"><div class="kpi-bar behind" style="width:38%"></div></div>
+        <span class="kpi-pct behind">38%</span>
+        <span class="kpi-flag behind">BEHIND</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<div class="section">
+  <div class="section-label">Why It Matters</div>
+  <h2>Goals Without Weekly Visibility Are Just Wishes</h2>
+  <p>Companies that track KPIs weekly are 2.4× more likely to hit annual targets. This workflow makes weekly tracking effortless — it happens whether you remember or not.</p>
+  <div class="impact-grid">
+    <div class="impact-card"><div class="impact-num">2.4×</div><div class="impact-label">More likely to hit annual targets with weekly goal tracking</div></div>
+    <div class="impact-card"><div class="impact-num">52×</div><div class="impact-label">Per year — every Monday without fail, regardless of how busy the previous week was</div></div>
+    <div class="impact-card"><div class="impact-num">Instant</div><div class="impact-label">Red/green flags — no analysis needed, problems are visible at a glance</div></div>
+    <div class="impact-card"><div class="impact-num">$0</div><div class="impact-label">Dashboard software cost — no Tableau, Databox, or Klipfolio subscription needed</div></div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<div class="section">
+  <div class="section-label">Pros & Considerations</div>
+  <h2>Honest Assessment</h2>
+  <div class="pros-cons">
+    <div class="pros">
+      <h3>✓ Advantages</h3>
+      <ul class="check-list">
+        <li>Fully automated — runs every Monday 8AM without any human triggering it</li>
+        <li>Red/green progress bars make problem areas impossible to miss</li>
+        <li>Covers any metric — revenue, leads, expenses, NPS, clients, anything with a number</li>
+        <li>Add a goal to the sheet, it's in next week's report automatically</li>
+        <li>Distributes to your whole team via email — everyone starts the week aligned</li>
+        <li>Visual progress bars in a plain email — no dashboard login required</li>
+      </ul>
+    </div>
+    <div class="cons">
+      <h3>⚠ Considerations</h3>
+      <ul class="warn-list">
+        <li>KPI values must be manually updated in the Google Sheet each week — no live data pull in base version</li>
+        <li>Static HTML email — can't click into a KPI for historical trending</li>
+        <li>Goals sheet format must match the expected schema (goalName, target, current, unit, deadline, owner)</li>
+        <li>No automatic Slack or SMS delivery in base version — email only</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<div class="section">
+  <div class="section-label">Cost Comparison</div>
+  <h2>What You're Replacing</h2>
+  <table class="cost-table">
+    <thead><tr><th>Solution</th><th>Monthly Cost</th><th>Auto Weekly Report</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Databox / Klipfolio</strong></td><td class="price red">$49–$149/mo</td><td>Yes</td><td><span class="badge badge-red">Dashboard-only</span></td></tr>
+      <tr><td><strong>Tableau / Power BI</strong></td><td class="price red">$15–$70/user/mo</td><td>Yes</td><td><span class="badge badge-red">Overkill for SMB</span></td></tr>
+      <tr><td><strong>Manual weekly reporting</strong></td><td class="price red">~$500 in labor/mo</td><td>Only if remembered</td><td><span class="badge badge-red">Inconsistent</span></td></tr>
+      <tr class="highlight"><td><strong>TSA — n8n + Google Sheets</strong></td><td class="price green">$25/mo total</td><td>Yes — every Monday 8AM</td><td><span class="badge badge-green">Best value</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<hr class="divider"/>
+
+<div class="section">
+  <div class="section-label">Who This Is For</div>
+  <h2>Perfect Fit Profile</h2>
+  <div class="who-grid">
+    <div class="who-card"><div class="who-icon">🎯</div><h4>Goal-Driven Leaders</h4><p>Founders, GMs, and VPs who set quarterly targets but never have time to check progress mid-quarter</p></div>
+    <div class="who-card"><div class="who-icon">📊</div><h4>Operations Teams</h4><p>Teams tracking 5–20 KPIs across revenue, delivery, and customer satisfaction</p></div>
+    <div class="who-card"><div class="who-icon">🏢</div><h4>SMBs Without a BI Team</h4><p>Companies that can't justify a Tableau license but need more than a manual spreadsheet</p></div>
+    <div class="who-card"><div class="who-icon">👥</div><h4>Distributed Teams</h4><p>Remote or hybrid teams who need a shared, consistent view of goal progress each week</p></div>
+  </div>
+</div>
+
+<div class="cta-section">
+  <h2>52 Weeks of Accountability — Automated</h2>
+  <p>Pair WF10 with WF6 for a complete operations picture: client status + goal progress, delivered every Monday before your first meeting.</p>
+  <a href="wf6-status-report.html" class="btn-primary">See Status Report →</a>
+  <a href="../index.html" class="btn-secondary">View All Workflows</a>
+</div>
+</body>
+</html>
