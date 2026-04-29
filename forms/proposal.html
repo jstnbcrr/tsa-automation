@@ -3,66 +3,74 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Send Proposal — TSA</title>
+  <title>Send Proposal — Tech Stack Automation</title>
   <style>
+    :root { --accent: #3b82f6; --accent-dim: rgba(59,130,246,0.12); --accent-glow: rgba(59,130,246,0.15); }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f8fafc; color: #2d3748; min-height: 100vh; }
-    nav { background: #003058; padding: 16px 40px; display: flex; align-items: center; justify-content: space-between; }
-    nav .logo { color: #fff; font-size: 18px; font-weight: 700; }
-    nav a { color: #a0aec0; font-size: 13px; text-decoration: none; }
-    nav a:hover { color: #fff; }
-    .container { max-width: 620px; margin: 48px auto; padding: 0 20px; }
-    .card { background: #fff; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-    .card-header { background: linear-gradient(135deg, #003058, #1a4a7a); padding: 32px; }
-    .card-header h1 { color: #fff; font-size: 22px; margin-bottom: 6px; }
-    .card-header p { color: #bee3f8; font-size: 14px; }
-    .card-body { padding: 32px; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #05070f; color: #e2e8f0; min-height: 100vh; }
+    nav { background: rgba(5,7,15,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 16px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .logo { font-weight: 700; font-size: 16px; color: #e2e8f0; }
+    .logo span { color: var(--accent); }
+    nav a { color: #94a3b8; font-size: 13px; text-decoration: none; transition: color 0.2s; }
+    nav a:hover { color: #e2e8f0; }
+    .page { min-height: calc(100vh - 57px); display: flex; align-items: center; justify-content: center; padding: 48px 20px; }
+    .card { width: 100%; max-width: 620px; background: #0d1117; border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; overflow: hidden; }
+    .card-top { height: 4px; background: linear-gradient(90deg, var(--accent), #60a5fa); }
+    .card-header { padding: 32px 36px 24px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .card-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-dim); border: 1px solid rgba(59,130,246,0.25); border-radius: 100px; padding: 4px 12px; font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+    .card-header h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .card-header p { color: #94a3b8; font-size: 14px; }
+    .card-body { padding: 28px 36px 36px; }
+    .info-strip { display: flex; align-items: flex-start; gap: 10px; background: var(--accent-dim); border: 1px solid rgba(59,130,246,0.2); border-radius: 10px; padding: 12px 16px; margin-bottom: 28px; font-size: 13px; color: #94a3b8; line-height: 1.5; }
+    .info-strip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: 5px; }
     .form-group { margin-bottom: 20px; }
-    label { display: block; font-size: 13px; font-weight: 600; color: #4a5568; margin-bottom: 6px; }
+    label { display: block; font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
     input, select {
-      width: 100%; padding: 10px 14px;
-      border: 1px solid #e2e8f0; border-radius: 8px;
+      width: 100%; padding: 12px 16px;
+      background: #161b27; border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; color: #e2e8f0;
       font-size: 14px; font-family: inherit;
-      color: #2d3748; background: #f8fafc;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
-    input:focus, select:focus {
-      outline: none; border-color: #003058;
-      box-shadow: 0 0 0 3px rgba(49,130,206,0.15);
-      background: #fff;
-    }
+    input::placeholder { color: #4a5568; }
+    select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; }
+    select option { background: #161b27; }
+    input:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
     .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    button {
+    .submit-btn {
       width: 100%; padding: 14px;
-      background: #003058; color: #fff;
-      border: none; border-radius: 8px;
-      font-size: 15px; font-weight: 600;
-      cursor: pointer; transition: background 0.2s;
+      background: var(--accent); color: #fff;
+      border: none; border-radius: 10px;
+      font-size: 15px; font-weight: 700;
+      cursor: pointer; transition: opacity 0.2s;
       margin-top: 8px;
     }
-    button:hover { background: #BA1C21; }
-    button:disabled { background: #a0aec0; cursor: not-allowed; }
-    .success { display: none; background: #f0fff4; border: 1px solid #9ae6b4; border-radius: 8px; padding: 20px; text-align: center; margin-top: 20px; }
-    .success h3 { color: #276749; margin-bottom: 6px; }
-    .success p { color: #4a5568; font-size: 13px; }
-    .error { display: none; background: #fff5f5; border: 1px solid #feb2b2; border-radius: 8px; padding: 16px; margin-top: 16px; font-size: 13px; color: #c53030; }
-    .info-box { background: #ebf8ff; border-left: 3px solid #003058; padding: 12px 16px; border-radius: 4px; margin-bottom: 24px; font-size: 13px; color: #003058; }
+    .submit-btn:hover { opacity: 0.88; }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .success { display: none; text-align: center; padding: 32px 24px; background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.2); border-radius: 12px; margin-top: 20px; }
+    .success-icon { font-size: 40px; margin-bottom: 16px; }
+    .success h3 { font-size: 18px; font-weight: 700; color: #10b981; margin-bottom: 8px; }
+    .success p { color: #94a3b8; font-size: 14px; line-height: 1.6; }
+    .error { display: none; padding: 14px 16px; margin-top: 16px; background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 10px; font-size: 13px; color: #f87171; }
+    @media(max-width:600px){ nav{padding:14px 20px;} .card-header,.card-body{padding-left:20px;padding-right:20px;} .row{grid-template-columns:1fr;} }
   </style>
 </head>
 <body>
 <nav>
-  <div class="logo">Tech Stack Automation</div>
+  <div class="logo">Tech Stack <span>Automation</span></div>
   <a href="../index.html">← Back to Home</a>
 </nav>
 
-<div class="container">
+<div class="page">
   <div class="card">
+    <div class="card-top"></div>
     <div class="card-header">
+      <div class="card-badge"><span>●</span> WF4 · Live Demo</div>
       <h1>📋 Send a Proposal</h1>
-      <p>Meridian Advisory Group — Proposal delivery with automated follow-up</p>
+      <p>Submit a proposal below — n8n delivers it instantly and schedules automatic follow-ups at Day 3 and Day 6 if there's no response.</p>
     </div>
     <div class="card-body">
-      <div class="info-box">📬 Proposal sent instantly → automatic follow-up at 3 days → escalation alert at 6 days if no response</div>
+      <div class="info-strip"><div class="dot"></div><span>Proposal delivered instantly → Day 3 follow-up nudge → Day 6 staff escalation if still pending</span></div>
       <form id="proposalForm">
         <div class="row">
           <div class="form-group">
@@ -89,12 +97,13 @@
           <label>Proposal Amount *</label>
           <input type="text" id="proposalAmount" required placeholder="$2,500/month" />
         </div>
-        <button type="submit" id="submitBtn">Send Proposal →</button>
+        <button type="submit" id="submitBtn" class="submit-btn">Send Proposal →</button>
       </form>
 
       <div class="success" id="successMsg">
-        <h3>✅ Proposal Sent!</h3>
-        <p>The proposal has been delivered to the client. Automatic follow-ups are scheduled for 3 and 6 days if there is no response.</p>
+        <div class="success-icon">✅</div>
+        <h3>Proposal Sent!</h3>
+        <p>The proposal has been delivered to the client. Automatic follow-ups are scheduled for Day 3 and Day 6 if there is no response.</p>
       </div>
       <div class="error" id="errorMsg">Something went wrong. Please try again.</div>
     </div>
@@ -105,28 +114,22 @@
   document.getElementById('proposalForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const btn = document.getElementById('submitBtn');
-    btn.disabled = true;
-    btn.textContent = 'Sending...';
-
+    btn.disabled = true; btn.textContent = 'Sending...';
     const payload = {
       clientName: document.getElementById('clientName').value,
       clientEmail: document.getElementById('clientEmail').value,
       serviceType: document.getElementById('serviceType').value,
       proposalAmount: document.getElementById('proposalAmount').value
     };
-
     try {
       await fetch('https://jstnbcrr.app.n8n.cloud/webhook/proposal-ready', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
       });
       document.getElementById('proposalForm').style.display = 'none';
       document.getElementById('successMsg').style.display = 'block';
     } catch (err) {
       document.getElementById('errorMsg').style.display = 'block';
-      btn.disabled = false;
-      btn.textContent = 'Send Proposal →';
+      btn.disabled = false; btn.textContent = 'Send Proposal →';
     }
   });
 </script>
