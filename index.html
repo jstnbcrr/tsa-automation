@@ -1,409 +1,1167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tech Stack Automation LLC | ISA 4600 Senior Project</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f4f4; color: #1a1a1a; }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Justin Becerra — Tech Stack Automation LLC | ISA 4600</title>
+<style>
+:root {
+  --bg: #05070f;
+  --bg2: #0d1117;
+  --bg3: #161b27;
+  --border: rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.1);
+  --text: #e8eaf0;
+  --muted: #6b7280;
+  --cyan: #00d4ff;
+  --cyan2: #0ea5e9;
+  --indigo: #6366f1;
+  --green: #10b981;
+  --red: #ef4444;
+  --yellow: #f59e0b;
+  --ut-red: #BA1C21;
+  --ut-blue: #003058;
+}
 
-    /* NAV */
-    nav {
-      background: #003058;
-      padding: 0 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    }
-    nav .logo { color: #fff; font-size: 18px; font-weight: 700; letter-spacing: 0.3px; display: flex; align-items: center; gap: 12px; }
-    nav .logo .ut-badge {
-      background: #BA1C21;
-      color: #fff;
-      font-size: 10px;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 4px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-    nav .nav-links { display: flex; gap: 4px; align-items: center; }
-    nav .nav-links a {
-      color: rgba(255,255,255,0.75);
-      text-decoration: none;
-      padding: 8px 14px;
-      font-size: 13px;
-      border-radius: 4px;
-      transition: background 0.2s, color 0.2s;
-    }
-    nav .nav-links a:hover { background: rgba(255,255,255,0.1); color: #fff; }
-    nav .nav-links .btn-nav {
-      background: #BA1C21;
-      color: #fff !important;
-      font-weight: 600;
-      margin-left: 8px;
-    }
-    nav .nav-links .btn-nav:hover { background: #9b1219; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
-    /* HERO */
-    .hero {
-      background: #003058;
-      padding: 72px 40px 64px;
-      text-align: center;
-      color: #fff;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 4px;
-      background: #BA1C21;
-    }
-    .hero .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(186,28,33,0.2);
-      border: 1px solid rgba(186,28,33,0.4);
-      color: #fca5a5;
-      padding: 6px 16px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 24px;
-    }
-    .hero h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 800; margin-bottom: 16px; line-height: 1.1; }
-    .hero h1 span { color: #f87171; }
-    .hero p { font-size: 18px; color: rgba(255,255,255,0.75); max-width: 580px; margin: 0 auto; line-height: 1.7; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
 
-    /* STATS BAR */
-    .stats-bar {
-      background: #BA1C21;
-      display: flex;
-      justify-content: center;
-      gap: 0;
-      flex-wrap: wrap;
-    }
-    .stat-item {
-      padding: 20px 48px;
-      text-align: center;
-      border-right: 1px solid rgba(255,255,255,0.15);
-    }
-    .stat-item:last-child { border-right: none; }
-    .stat-num { font-size: 28px; font-weight: 800; color: #fff; line-height: 1; }
-    .stat-label { font-size: 11px; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+a { color: inherit; text-decoration: none; }
 
-    /* SECTION */
-    .section { padding: 64px 40px; max-width: 1120px; margin: 0 auto; }
-    .section-eyebrow { font-size: 11px; font-weight: 700; color: #BA1C21; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 8px; }
-    .section-title { font-size: clamp(22px, 3vw, 32px); font-weight: 700; color: #003058; margin-bottom: 8px; }
-    .section-sub { font-size: 15px; color: #6b7280; margin-bottom: 40px; max-width: 620px; }
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
 
-    /* WORKFLOW GRID */
-    .workflow-section { background: #fff; border-top: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; }
-    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
-    .card {
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      padding: 24px;
-      transition: box-shadow 0.2s, border-color 0.2s;
-      position: relative;
-      overflow: hidden;
-    }
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: #BA1C21;
-      transform: scaleX(0);
-      transition: transform 0.2s;
-    }
-    .card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-color: #d1d5db; }
-    .card:hover::before { transform: scaleX(1); }
-    .card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
-    .card-icon { font-size: 28px; }
-    .card-tag {
-      font-size: 10px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-    .tag-blue { background: #dbeafe; color: #1e40af; }
-    .tag-green { background: #dcfce7; color: #166534; }
-    .tag-red { background: #fee2e2; color: #991b1b; }
-    .tag-purple { background: #ede9fe; color: #5b21b6; }
-    .tag-orange { background: #ffedd5; color: #9a3412; }
-    .tag-ut { background: #fff1f2; color: #BA1C21; }
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 60px;
+  background: rgba(5,7,15,0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s;
+}
+.nav-logo { display: flex; align-items: center; gap: 12px; }
+.nav-logo .wordmark { font-size: 15px; font-weight: 700; letter-spacing: -0.3px; }
+.nav-logo .wordmark span { color: var(--cyan); }
+.nav-logo .chip {
+  background: var(--ut-red); color: #fff;
+  font-size: 9px; font-weight: 800;
+  padding: 3px 7px; border-radius: 3px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+.nav-links { display: flex; align-items: center; gap: 6px; }
+.nav-links a {
+  color: var(--muted); font-size: 13px;
+  padding: 6px 12px; border-radius: 5px;
+  transition: color 0.15s, background 0.15s;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+.nav-links .nav-cta {
+  background: var(--cyan); color: #000 !important;
+  font-weight: 700; font-size: 12px;
+  padding: 7px 16px; border-radius: 5px;
+  margin-left: 8px;
+  transition: opacity 0.15s !important;
+}
+.nav-links .nav-cta:hover { opacity: 0.85; background: var(--cyan) !important; }
 
-    .card h3 { font-size: 16px; font-weight: 700; color: #003058; margin-bottom: 8px; }
-    .card p { font-size: 13px; color: #6b7280; line-height: 1.65; margin-bottom: 20px; }
-    .card-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-    .btn-primary {
-      display: inline-block;
-      background: #BA1C21;
-      color: #fff;
-      padding: 8px 16px;
-      border-radius: 5px;
-      font-size: 13px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: background 0.2s;
-    }
-    .btn-primary:hover { background: #9b1219; }
-    .btn-ghost {
-      display: inline-block;
-      color: #003058;
-      font-size: 12px;
-      font-weight: 600;
-      text-decoration: none;
-      border: 1px solid #d1d5db;
-      padding: 7px 14px;
-      border-radius: 5px;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .btn-ghost:hover { border-color: #003058; color: #003058; }
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 100px 48px 80px;
+  position: relative; overflow: hidden;
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%);
+}
+.hero-glow {
+  position: absolute; top: -20%; left: 50%;
+  transform: translateX(-50%);
+  width: 900px; height: 500px;
+  background: radial-gradient(ellipse, rgba(0,212,255,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0,212,255,0.06);
+  border: 1px solid rgba(0,212,255,0.15);
+  border-radius: 100px; padding: 6px 16px;
+  font-size: 12px; color: var(--cyan);
+  font-weight: 600; letter-spacing: 0.04em;
+  margin-bottom: 32px;
+  animation: fadeUp 0.8s ease both;
+}
+.hero-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); animation: pulse 2s infinite; }
+.hero h1 {
+  font-size: clamp(48px, 7vw, 88px);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -3px;
+  margin-bottom: 24px;
+  animation: fadeUp 0.8s 0.1s ease both;
+}
+.hero h1 .line2 { color: var(--cyan); display: block; }
+.hero h1 .line3 { color: rgba(255,255,255,0.2); display: block; }
+.hero-sub {
+  font-size: 18px; color: var(--muted);
+  max-width: 560px; line-height: 1.7;
+  margin-bottom: 48px;
+  animation: fadeUp 0.8s 0.2s ease both;
+}
+.hero-meta {
+  display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+  margin-bottom: 64px;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+.hero-meta-item { font-size: 13px; color: var(--muted); }
+.hero-meta-item span { color: var(--text); font-weight: 600; }
+.hero-meta-divider { width: 1px; height: 16px; background: var(--border2); }
 
-    /* ALL WORKFLOWS SECTION */
-    .all-workflows { background: #f9fafb; padding: 64px 40px; }
-    .all-grid { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-top: 32px; }
-    .wf-card {
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      padding: 20px;
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-      transition: box-shadow 0.2s, border-color 0.2s;
-    }
-    .wf-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.07); border-color: #BA1C21; }
-    .wf-num { background: #003058; color: #fff; font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 4px; flex-shrink: 0; margin-top: 2px; }
-    .wf-info h4 { font-size: 14px; font-weight: 600; color: #003058; margin-bottom: 4px; }
-    .wf-info p { font-size: 12px; color: #9ca3af; }
+.hero-stats {
+  display: flex; gap: 0;
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  overflow: hidden;
+  width: fit-content;
+  animation: fadeUp 0.8s 0.4s ease both;
+}
+.hero-stat {
+  padding: 20px 36px; text-align: center;
+  border-right: 1px solid var(--border2);
+  position: relative;
+}
+.hero-stat:last-child { border-right: none; }
+.hero-stat::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.hero-stat:hover::before { opacity: 1; }
+.hs-num { font-size: 32px; font-weight: 800; color: var(--text); letter-spacing: -1px; line-height: 1; }
+.hs-num em { color: var(--cyan); font-style: normal; }
+.hs-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
 
-    /* ABOUT SECTION */
-    .about-section { background: #003058; color: #fff; padding: 64px 40px; }
-    .about-inner { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
-    .about-section h2 { font-size: 28px; font-weight: 700; margin-bottom: 16px; }
-    .about-section p { color: rgba(255,255,255,0.75); font-size: 15px; line-height: 1.7; margin-bottom: 16px; }
-    .about-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
-    .pill { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 100px; }
-    .info-table { display: flex; flex-direction: column; gap: 1px; }
-    .info-row { display: flex; background: rgba(255,255,255,0.05); border-radius: 6px; margin-bottom: 8px; }
-    .info-label { width: 140px; padding: 14px 16px; font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.06em; flex-shrink: 0; }
-    .info-val { padding: 14px 16px; font-size: 14px; color: #fff; }
+.hero-scroll {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: var(--muted); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  animation: fadeIn 1s 1s ease both;
+}
+.scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--muted), transparent); }
 
-    /* FOOTER */
-    footer {
-      background: #1a1a1a;
-      color: rgba(255,255,255,0.5);
-      text-align: center;
-      padding: 28px 40px;
-      font-size: 13px;
-    }
-    footer .footer-top { color: #fff; font-weight: 600; font-size: 14px; margin-bottom: 6px; }
-    footer .ut-red { color: #f87171; }
+/* ── SECTION COMMON ── */
+.section { padding: 100px 48px; max-width: 1200px; margin: 0 auto; }
+.section-divider { border: none; border-top: 1px solid var(--border); max-width: 1200px; margin: 0 auto; }
+.label {
+  font-size: 11px; font-weight: 700; color: var(--cyan);
+  text-transform: uppercase; letter-spacing: 0.15em;
+  margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+}
+.label::before { content: ''; width: 24px; height: 1px; background: var(--cyan); }
+.section-h2 {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 800; letter-spacing: -1.5px;
+  line-height: 1.1; margin-bottom: 16px;
+}
+.section-sub { font-size: 16px; color: var(--muted); max-width: 600px; line-height: 1.7; }
 
-    @media (max-width: 768px) {
-      nav { padding: 0 16px; }
-      .hero { padding: 48px 20px; }
-      .stats-bar { flex-direction: column; }
-      .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.15); }
-      .section, .all-workflows { padding: 48px 20px; }
-      .about-inner { grid-template-columns: 1fr; gap: 40px; }
-    }
-  </style>
+/* ── REVEAL ANIMATION ── */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* ── OVERVIEW ── */
+#overview { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+#overview .section { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.overview-text p { font-size: 16px; color: var(--muted); line-height: 1.8; margin-bottom: 16px; }
+.thesis-box {
+  margin-top: 32px; padding: 20px 24px;
+  background: rgba(0,212,255,0.04);
+  border: 1px solid rgba(0,212,255,0.15);
+  border-left: 3px solid var(--cyan);
+  border-radius: 8px;
+  font-size: 15px; color: var(--text); line-height: 1.6;
+  font-style: italic;
+}
+.stack-grid { display: flex; flex-direction: column; gap: 12px; }
+.stack-item {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px 20px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  transition: border-color 0.2s;
+}
+.stack-item:hover { border-color: var(--cyan); }
+.stack-icon { font-size: 24px; flex-shrink: 0; }
+.stack-info h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.stack-info p { font-size: 12px; color: var(--muted); }
+.stack-badge {
+  margin-left: auto; font-size: 10px; font-weight: 700;
+  padding: 3px 8px; border-radius: 4px;
+  background: rgba(0,212,255,0.1); color: var(--cyan);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  flex-shrink: 0;
+}
+
+/* ── WORKFLOWS ── */
+#workflows { padding: 100px 0; }
+#workflows .section { max-width: 100%; padding: 0 48px; }
+.wf-header { max-width: 1200px; margin: 0 auto 64px; }
+
+.wf-filter {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-top: 32px;
+}
+.wf-filter button {
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--muted); font-size: 12px; font-weight: 600;
+  padding: 7px 16px; border-radius: 100px;
+  cursor: pointer; transition: all 0.15s;
+}
+.wf-filter button:hover, .wf-filter button.active {
+  background: var(--cyan); border-color: var(--cyan);
+  color: #000;
+}
+
+.wf-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 20px; max-width: 1200px; margin: 0 auto;
+}
+.wf-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+.wf-card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-2px); }
+.wf-card-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; justify-content: space-between;
+}
+.wf-num-badge {
+  font-size: 10px; font-weight: 800; color: var(--cyan);
+  background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2);
+  padding: 3px 8px; border-radius: 4px; letter-spacing: 0.06em;
+  flex-shrink: 0;
+}
+.wf-type-badge {
+  font-size: 10px; font-weight: 700;
+  padding: 3px 8px; border-radius: 4px;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.type-ai { background: rgba(99,102,241,0.15); color: #818cf8; }
+.type-ops { background: rgba(16,185,129,0.15); color: #34d399; }
+.type-sales { background: rgba(0,212,255,0.1); color: var(--cyan); }
+.type-cx { background: rgba(239,68,68,0.1); color: #f87171; }
+.type-personal { background: rgba(245,158,11,0.1); color: #fbbf24; }
+
+.wf-card-body { padding: 20px 24px; }
+.wf-card-body h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.3px; }
+.wf-card-body p { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
+
+/* FLOW DIAGRAM */
+.flow-diagram {
+  display: flex; align-items: center; gap: 0;
+  overflow-x: auto; padding-bottom: 8px;
+  margin-bottom: 20px;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.flow-node {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  flex-shrink: 0;
+}
+.flow-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: var(--bg3); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; margin-bottom: 6px;
+  transition: border-color 0.2s;
+}
+.wf-card:hover .flow-icon { border-color: rgba(0,212,255,0.3); }
+.flow-node-label { font-size: 10px; color: var(--muted); white-space: nowrap; max-width: 64px; line-height: 1.3; }
+.flow-arrow {
+  color: var(--border2); font-size: 14px;
+  padding: 0 6px; flex-shrink: 0;
+  margin-bottom: 18px;
+}
+
+.wf-card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 24px;
+  border-top: 1px solid var(--border);
+  background: rgba(255,255,255,0.01);
+}
+.wf-scores { display: flex; gap: 16px; }
+.wf-score { display: flex; flex-direction: column; align-items: center; }
+.wf-score-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.wf-score-dots { display: flex; gap: 3px; }
+.wf-score-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border2); }
+.wf-score-dot.filled { background: var(--cyan); }
+.wf-score-dot.filled.green { background: var(--green); }
+
+.wf-cta {
+  font-size: 12px; font-weight: 600; color: var(--cyan);
+  display: flex; align-items: center; gap: 4px;
+  opacity: 0; transition: opacity 0.2s;
+}
+.wf-card:hover .wf-cta { opacity: 1; }
+
+/* ── DEMOS ── */
+#demos { background: var(--bg2); border-top: 1px solid var(--border); }
+.demos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px; margin-top: 48px;
+}
+.demo-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex; flex-direction: column;
+  transition: border-color 0.2s, transform 0.2s;
+  position: relative; overflow: hidden;
+}
+.demo-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s;
+}
+.demo-card:hover { border-color: rgba(255,255,255,0.12); transform: translateY(-2px); }
+.demo-card:hover::before { transform: scaleX(1); }
+.demo-card.dc-cyan::before { background: var(--cyan); }
+.demo-card.dc-green::before { background: var(--green); }
+.demo-card.dc-red::before { background: var(--red); }
+.demo-card.dc-indigo::before { background: var(--indigo); }
+.demo-card.dc-yellow::before { background: var(--yellow); }
+.demo-card.dc-pink::before { background: #ec4899; }
+
+.demo-icon { font-size: 32px; margin-bottom: 16px; }
+.demo-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+.demo-card p { font-size: 13px; color: var(--muted); line-height: 1.6; flex: 1; margin-bottom: 24px; }
+.demo-trigger {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--muted); margin-bottom: 20px;
+}
+.trigger-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+.demo-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 20px; border-radius: 7px;
+  font-size: 13px; font-weight: 700;
+  transition: opacity 0.15s;
+  align-self: flex-start;
+}
+.demo-btn:hover { opacity: 0.85; }
+.demo-btn.cyan { background: var(--cyan); color: #000; }
+.demo-btn.green { background: var(--green); color: #000; }
+.demo-btn.red { background: var(--red); color: #fff; }
+.demo-btn.indigo { background: var(--indigo); color: #fff; }
+.demo-btn.yellow { background: var(--yellow); color: #000; }
+.demo-btn.pink { background: #ec4899; color: #fff; }
+
+/* ── REFLECTION ── */
+#reflection { position: relative; overflow: hidden; }
+.reflection-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 60% at 80% 50%, rgba(99,102,241,0.06), transparent);
+  pointer-events: none;
+}
+.reflection-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.reflection-text p { font-size: 16px; color: var(--muted); line-height: 1.85; margin-bottom: 20px; }
+.reflection-text strong { color: var(--text); }
+.learnings { display: flex; flex-direction: column; gap: 16px; }
+.learning-item {
+  padding: 20px 24px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; display: flex; gap: 16px; align-items: flex-start;
+  transition: border-color 0.2s;
+}
+.learning-item:hover { border-color: var(--border2); }
+.learning-num {
+  font-size: 12px; font-weight: 800; color: var(--indigo);
+  background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2);
+  width: 28px; height: 28px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.learning-item h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.learning-item p { font-size: 13px; color: var(--muted); }
+
+/* ── LO SECTION ── */
+#learning-objectives { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.lo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
+.lo-card {
+  padding: 24px; background: var(--bg3);
+  border: 1px solid var(--border); border-radius: 10px;
+  transition: border-color 0.2s;
+}
+.lo-card:hover { border-color: var(--border2); }
+.lo-num { font-size: 11px; font-weight: 800; color: var(--cyan); letter-spacing: 0.1em; margin-bottom: 12px; }
+.lo-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+.lo-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 48px;
+}
+.footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
+.footer-left .f-name { font-size: 18px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 4px; }
+.footer-left .f-name span { color: var(--cyan); }
+.footer-left .f-sub { font-size: 13px; color: var(--muted); }
+.footer-links { display: flex; gap: 12px; }
+.footer-link {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 18px; border-radius: 7px;
+  border: 1px solid var(--border2);
+  font-size: 13px; font-weight: 600; color: var(--text);
+  transition: border-color 0.2s, background 0.2s;
+}
+.footer-link:hover { border-color: var(--cyan); background: rgba(0,212,255,0.04); color: var(--cyan); }
+.footer-bottom {
+  max-width: 1200px; margin: 32px auto 0;
+  padding-top: 24px; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  font-size: 12px; color: var(--muted);
+}
+.footer-bottom span { color: var(--ut-red); }
+
+/* ── KEYFRAMES ── */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  nav { padding: 0 20px; }
+  nav .nav-links a:not(.nav-cta) { display: none; }
+  #hero { padding: 100px 24px 60px; }
+  .hero h1 { letter-spacing: -1.5px; }
+  .hero-stats { flex-wrap: wrap; }
+  .hero-stat { padding: 16px 24px; }
+  .section { padding: 60px 24px; }
+  #overview .section { grid-template-columns: 1fr; gap: 48px; }
+  .reflection-grid { grid-template-columns: 1fr; gap: 48px; }
+  .lo-grid { grid-template-columns: 1fr 1fr; }
+  .wf-grid { grid-template-columns: 1fr; }
+  footer { padding: 40px 24px; }
+  .footer-inner { flex-direction: column; }
+}
+@media (max-width: 600px) {
+  .lo-grid { grid-template-columns: 1fr; }
+  .demos-grid { grid-template-columns: 1fr; }
+}
+</style>
 </head>
 <body>
 
+<!-- ── NAV ── -->
 <nav>
-  <div class="logo">
-    Tech Stack Automation
-    <span class="ut-badge">Utah Tech</span>
+  <div class="nav-logo">
+    <div class="wordmark">Tech Stack <span>Automation</span></div>
+    <div class="chip">Utah Tech</div>
   </div>
   <div class="nav-links">
-    <a href="index.html">Home</a>
-    <a href="forms/onboarding.html">Client Intake</a>
-    <a href="forms/expense.html">Expenses</a>
-    <a href="forms/complaint.html">Support</a>
-    <a href="forms/meeting.html">Meeting Notes</a>
-    <a href="forms/content.html">Content Ideas</a>
-    <a href="forms/proposal.html" class="btn-nav">Send Proposal →</a>
+    <a href="#overview">Overview</a>
+    <a href="#workflows">Workflows</a>
+    <a href="#demos">Live Demos</a>
+    <a href="#reflection">Reflection</a>
+    <a href="mailto:jstnbcrr@gmail.com" class="nav-cta">Contact →</a>
   </div>
 </nav>
 
-<div class="hero">
-  <div class="eyebrow">🎓 ISA 4600 Senior Project — Utah Tech University · Spring 2026</div>
-  <h1>Automation for <span>Real Business</span></h1>
-  <p>Tech Stack Automation LLC builds production-grade n8n workflows that replace $1,000+/month enterprise tools for $25/month — live, tested, and running.</p>
-</div>
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <span class="dot"></span>
+      ISA 4600 Senior Project &nbsp;·&nbsp; Spring 2026
+    </div>
+    <h1>
+      Tech Stack
+      <span class="line2">Automation</span>
+      <span class="line3">LLC</span>
+    </h1>
+    <p class="hero-sub">
+      13 production-grade n8n workflows replacing $1,000+/month enterprise software for $25/month — live, tested, and running.
+    </p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><span>Justin Becerra</span></div>
+      <div class="hero-meta-divider"></div>
+      <div class="hero-meta-item">Utah Tech University</div>
+      <div class="hero-meta-divider"></div>
+      <div class="hero-meta-item">Information Systems &amp; Analytics</div>
+      <div class="hero-meta-divider"></div>
+      <div class="hero-meta-item"><span>Spring 2026</span></div>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hs-num"><em>13</em></div><div class="hs-label">Workflows Built</div></div>
+      <div class="hero-stat"><div class="hs-num">$<em>25</em><span style="font-size:16px;color:var(--muted)">/mo</span></div><div class="hs-label">Total Platform Cost</div></div>
+      <div class="hero-stat"><div class="hs-num"><em>$15K</em><span style="font-size:16px;color:var(--muted)">+</span></div><div class="hs-label">Annual Savings</div></div>
+      <div class="hero-stat"><div class="hs-num">GPT<em>-4o</em></div><div class="hs-label">AI Powered</div></div>
+      <div class="hero-stat"><div class="hs-num"><em>6</em></div><div class="hs-label">Live Demos</div></div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
 
-<div class="stats-bar">
-  <div class="stat-item"><div class="stat-num">13</div><div class="stat-label">Workflows Built</div></div>
-  <div class="stat-item"><div class="stat-num">$15K+</div><div class="stat-label">Annual Savings</div></div>
-  <div class="stat-item"><div class="stat-num">$25/mo</div><div class="stat-label">Total Platform Cost</div></div>
-  <div class="stat-item"><div class="stat-num">GPT-4o</div><div class="stat-label">AI Powered</div></div>
-  <div class="stat-item"><div class="stat-num">6</div><div class="stat-label">Live Demo Forms</div></div>
-</div>
-
-<div class="workflow-section">
+<!-- ── OVERVIEW ── -->
+<section id="overview">
   <div class="section">
-    <div class="section-eyebrow">Live Demos</div>
-    <div class="section-title">Trigger a Real Workflow Right Now</div>
-    <div class="section-sub">Each form below fires a live n8n automation — data is processed, logged to Google Sheets, and emails are sent automatically within seconds.</div>
+    <div class="overview-text reveal">
+      <div class="label">Project Overview</div>
+      <h2 class="section-h2">Built for real.<br/>Runs in production.</h2>
+      <p>Tech Stack Automation LLC is not a mock project. Every workflow handles live data, fires real emails, logs to real spreadsheets, and calls real AI APIs.</p>
+      <p>The core thesis: SMBs don't need Salesforce, Zendesk, or Expensify. They need smart, lightweight automations connecting the tools they already use — and n8n makes that possible for $25/month.</p>
+      <div class="thesis-box">
+        "Replace $1,000+/month enterprise software stacks with purpose-built n8n workflows — without sacrificing capability, reliability, or professionalism."
+      </div>
+    </div>
+    <div class="stack-grid reveal reveal-delay-2">
+      <div class="label" style="margin-bottom:24px;">Tech Stack</div>
+      <div class="stack-item">
+        <div class="stack-icon">⚡</div>
+        <div class="stack-info"><h4>n8n Cloud</h4><p>Workflow automation platform — webhook, schedule, and chat triggers</p></div>
+        <div class="stack-badge">Core</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-icon">🤖</div>
+        <div class="stack-info"><h4>OpenAI GPT-4o</h4><p>AI agent, content generation, sentiment analysis, lead scoring</p></div>
+        <div class="stack-badge">AI</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-icon">📊</div>
+        <div class="stack-info"><h4>Google Sheets</h4><p>Live CRM, expense ledger, KPI tracker, invoice log</p></div>
+        <div class="stack-badge">Data</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-icon">📧</div>
+        <div class="stack-info"><h4>Gmail API</h4><p>Automated email delivery, alerts, receipts, summaries</p></div>
+        <div class="stack-badge">Comms</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-icon">🔗</div>
+        <div class="stack-info"><h4>Webhooks + GitHub Pages</h4><p>Live form submissions, public-facing demo site</p></div>
+        <div class="stack-badge">Deploy</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <div class="cards">
+<hr class="section-divider"/>
 
-      <div class="card">
-        <div class="card-top">
-          <div class="card-icon">🧾</div>
-          <span class="card-tag tag-blue">Professional Services</span>
-        </div>
-        <h3>Client Onboarding Intake</h3>
-        <p>New client submits their info → welcome email sent instantly → staff notified → document follow-up scheduled automatically.</p>
-        <div class="card-actions">
-          <a href="forms/onboarding.html" class="btn-primary">Start Onboarding →</a>
-          <a href="workflows/wf1-client-intake.html" class="btn-ghost">Learn More ↗</a>
+<!-- ── WORKFLOWS ── -->
+<section id="workflows">
+  <div class="section" style="max-width:1200px;padding-bottom:0;">
+    <div class="wf-header reveal">
+      <div class="label">Workflow Catalog</div>
+      <h2 class="section-h2">13 automations.<br/>Zero manual steps.</h2>
+      <p class="section-sub" style="margin-bottom:0;">Each workflow is production-active on n8n Cloud. Click any card for full documentation.</p>
+      <div class="wf-filter">
+        <button class="active" onclick="filterWF('all',this)">All</button>
+        <button onclick="filterWF('ai',this)">AI Powered</button>
+        <button onclick="filterWF('ops',this)">Operations</button>
+        <button onclick="filterWF('sales',this)">Sales</button>
+        <button onclick="filterWF('cx',this)">Customer Experience</button>
+        <button onclick="filterWF('personal',this)">Personal</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding:32px 48px 100px; max-width:1300px; margin:0 auto;">
+  <div class="wf-grid" id="wf-grid">
+
+    <!-- WF1 -->
+    <a href="workflows/wf1-client-intake.html" class="wf-card reveal" data-type="ops">
+      <div class="wf-card-header">
+        <span class="wf-num-badge">WF1</span>
+        <span class="wf-type-badge type-ops">Operations</span>
+      </div>
+      <div class="wf-card-body">
+        <h3>Client Intake + CRM Entry</h3>
+        <p>New client submits a form. Welcome email fires in under 60 seconds. CRM row created. Staff notified. Document follow-up scheduled. Zero manual steps.</p>
+        <div class="flow-diagram">
+          <div class="flow-node"><div class="flow-icon">📝</div><div class="flow-node-label">Form Submit</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">🔖</div><div class="flow-node-label">Generate ID</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📧</div><div class="flow-node-label">Welcome Email</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📊</div><div class="flow-node-label">CRM Log</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">🔔</div><div class="flow-node-label">Staff Alert</div></div>
         </div>
       </div>
-
-      <div class="card">
-        <div class="card-top">
-          <div class="card-icon">💸</div>
-          <span class="card-tag tag-green">Finance & Ops</span>
+      <div class="wf-card-footer">
+        <div class="wf-scores">
+          <div class="wf-score"><div class="wf-score-label">Complexity</div><div class="wf-score-dots"><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot"></div><div class="wf-score-dot"></div></div></div>
+          <div class="wf-score"><div class="wf-score-label">Impact</div><div class="wf-score-dots"><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot"></div></div></div>
         </div>
+        <div class="wf-cta">View Details →</div>
+      </div>
+    </a>
+
+    <!-- WF2/3 -->
+    <a href="workflows/wf2-document-followup.html" class="wf-card reveal reveal-delay-1" data-type="ops">
+      <div class="wf-card-header">
+        <span class="wf-num-badge">WF2/3</span>
+        <span class="wf-type-badge type-ops">Operations</span>
+      </div>
+      <div class="wf-card-body">
+        <h3>Document Follow-Up Reminders</h3>
+        <p>Scans the CRM daily. Any PENDING client gets tiered follow-ups at Day 1, Day 3, and Day 6 — escalating to staff if ignored. Automatic, every weekday.</p>
+        <div class="flow-diagram">
+          <div class="flow-node"><div class="flow-icon">⏰</div><div class="flow-node-label">Daily 9AM</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">🔍</div><div class="flow-node-label">Filter PENDING</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📅</div><div class="flow-node-label">Calc Days</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📧</div><div class="flow-node-label">Reminder</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">🚨</div><div class="flow-node-label">Escalate</div></div>
+        </div>
+      </div>
+      <div class="wf-card-footer">
+        <div class="wf-scores">
+          <div class="wf-score"><div class="wf-score-label">Complexity</div><div class="wf-score-dots"><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot"></div></div></div>
+          <div class="wf-score"><div class="wf-score-label">Impact</div><div class="wf-score-dots"><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div></div></div>
+        </div>
+        <div class="wf-cta">View Details →</div>
+      </div>
+    </a>
+
+    <!-- WF4 -->
+    <a href="workflows/wf4-proposal-delivery.html" class="wf-card reveal reveal-delay-2" data-type="sales">
+      <div class="wf-card-header">
+        <span class="wf-num-badge">WF4</span>
+        <span class="wf-type-badge type-sales">Sales</span>
+      </div>
+      <div class="wf-card-body">
+        <h3>Proposal Delivery + Auto Follow-Up</h3>
+        <p>Submit a proposal. It's delivered instantly. If the client goes silent, automatic follow-ups fire at Day 3 and Day 6 with staff escalation if still no response.</p>
+        <div class="flow-diagram">
+          <div class="flow-node"><div class="flow-icon">📋</div><div class="flow-node-label">Submit</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📧</div><div class="flow-node-label">Deliver</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">⏳</div><div class="flow-node-label">Day 3 Check</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">🔁</div><div class="flow-node-label">Follow-Up</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">🚨</div><div class="flow-node-label">Day 6 Alert</div></div>
+        </div>
+      </div>
+      <div class="wf-card-footer">
+        <div class="wf-scores">
+          <div class="wf-score"><div class="wf-score-label">Complexity</div><div class="wf-score-dots"><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot"></div></div></div>
+          <div class="wf-score"><div class="wf-score-label">Impact</div><div class="wf-score-dots"><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot"></div></div></div>
+        </div>
+        <div class="wf-cta">View Details →</div>
+      </div>
+    </a>
+
+    <!-- WF5 -->
+    <a href="workflows/wf5-payment-alerts.html" class="wf-card reveal" data-type="ops">
+      <div class="wf-card-header">
+        <span class="wf-num-badge">WF5</span>
+        <span class="wf-type-badge type-ops">Operations</span>
+      </div>
+      <div class="wf-card-body">
+        <h3>Payment Due Alerts</h3>
+        <p>Runs every weekday at 8AM. Scans all invoices, calculates days until due, and fires tiered alerts — reminder at 3 days, notice at 0 days, escalation at 7+ days overdue.</p>
+        <div class="flow-diagram">
+          <div class="flow-node"><div class="flow-icon">🕗</div><div class="flow-node-label">8AM Daily</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📊</div><div class="flow-node-label">Read Invoices</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📅</div><div class="flow-node-label">Days Calc</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">⚖️</div><div class="flow-node-label">Tier Route</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📧</div><div class="flow-node-label">Alert</div></div>
+        </div>
+      </div>
+      <div class="wf-card-footer">
+        <div class="wf-scores">
+          <div class="wf-score"><div class="wf-score-label">Complexity</div><div class="wf-score-dots"><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot"></div><div class="wf-score-dot"></div></div></div>
+          <div class="wf-score"><div class="wf-score-label">Impact</div><div class="wf-score-dots"><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div></div></div>
+        </div>
+        <div class="wf-cta">View Details →</div>
+      </div>
+    </a>
+
+    <!-- WF6 -->
+    <a href="workflows/wf6-status-report.html" class="wf-card reveal reveal-delay-1" data-type="ops">
+      <div class="wf-card-header">
+        <span class="wf-num-badge">WF6</span>
+        <span class="wf-type-badge type-ops">Operations</span>
+      </div>
+      <div class="wf-card-body">
+        <h3>Weekly Client Status Report</h3>
+        <p>Every Monday at 7AM, a color-coded HTML client status report lands in the inbox — aggregated from Google Sheets automatically. 52 reports a year, zero effort.</p>
+        <div class="flow-diagram">
+          <div class="flow-node"><div class="flow-icon">📅</div><div class="flow-node-label">Mon 7AM</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📊</div><div class="flow-node-label">Read CRM</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">🔀</div><div class="flow-node-label">Aggregate</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">🎨</div><div class="flow-node-label">Build HTML</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📧</div><div class="flow-node-label">Email</div></div>
+        </div>
+      </div>
+      <div class="wf-card-footer">
+        <div class="wf-scores">
+          <div class="wf-score"><div class="wf-score-label">Complexity</div><div class="wf-score-dots"><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot"></div><div class="wf-score-dot"></div></div></div>
+          <div class="wf-score"><div class="wf-score-label">Impact</div><div class="wf-score-dots"><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot"></div><div class="wf-score-dot"></div></div></div>
+        </div>
+        <div class="wf-cta">View Details →</div>
+      </div>
+    </a>
+
+    <!-- WF7 -->
+    <a href="workflows/wf7-lead-qualifier.html" class="wf-card reveal reveal-delay-2" data-type="ai">
+      <div class="wf-card-header">
+        <span class="wf-num-badge">WF7</span>
+        <span class="wf-type-badge type-ai">AI · GPT-4o</span>
+      </div>
+      <div class="wf-card-body">
+        <h3>AI Lead Qualifier Chatbot</h3>
+        <p>A live GPT-4o chatbot collects 8 lead data points through natural conversation, scores each lead HOT/WARM/COLD, logs to CRM, and alerts sales — 24/7.</p>
+        <div class="flow-diagram">
+          <div class="flow-node"><div class="flow-icon">💬</div><div class="flow-node-label">Chat Trigger</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">🤖</div><div class="flow-node-label">GPT-4o Agent</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">🎯</div><div class="flow-node-label">Score Lead</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📊</div><div class="flow-node-label">CRM Log</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">🔥</div><div class="flow-node-label">Alert Team</div></div>
+        </div>
+      </div>
+      <div class="wf-card-footer">
+        <div class="wf-scores">
+          <div class="wf-score"><div class="wf-score-label">Complexity</div><div class="wf-score-dots"><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div></div></div>
+          <div class="wf-score"><div class="wf-score-label">Impact</div><div class="wf-score-dots"><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div></div></div>
+        </div>
+        <div class="wf-cta">View Details →</div>
+      </div>
+    </a>
+
+    <!-- WF8 -->
+    <a href="workflows/wf8-morning-briefing.html" class="wf-card reveal" data-type="personal">
+      <div class="wf-card-header">
+        <span class="wf-num-badge">WF8</span>
+        <span class="wf-type-badge type-personal">Personal</span>
+      </div>
+      <div class="wf-card-body">
+        <h3>Daily Morning Briefing</h3>
+        <p>Every morning at 7AM, a custom email arrives with live weather, today's Google Calendar events, and your top priorities — pulled from 3 APIs in parallel.</p>
+        <div class="flow-diagram">
+          <div class="flow-node"><div class="flow-icon">☀️</div><div class="flow-node-label">7AM Daily</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">🌤️</div><div class="flow-node-label">Weather API</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📅</div><div class="flow-node-label">Calendar</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">🎯</div><div class="flow-node-label">Priorities</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📧</div><div class="flow-node-label">Brief Email</div></div>
+        </div>
+      </div>
+      <div class="wf-card-footer">
+        <div class="wf-scores">
+          <div class="wf-score"><div class="wf-score-label">Complexity</div><div class="wf-score-dots"><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot"></div><div class="wf-score-dot"></div></div></div>
+          <div class="wf-score"><div class="wf-score-label">Impact</div><div class="wf-score-dots"><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot"></div><div class="wf-score-dot"></div></div></div>
+        </div>
+        <div class="wf-cta">View Details →</div>
+      </div>
+    </a>
+
+    <!-- WF9 -->
+    <a href="workflows/wf9-expense-logger.html" class="wf-card reveal reveal-delay-1" data-type="ops">
+      <div class="wf-card-header">
+        <span class="wf-num-badge">WF9</span>
+        <span class="wf-type-badge type-ops">Operations</span>
+      </div>
+      <div class="wf-card-body">
         <h3>Expense Logger</h3>
-        <p>Submit any expense → logged to Google Sheets with a unique EXP-ID → receipt email sent to submitter instantly. No app needed.</p>
-        <div class="card-actions">
-          <a href="forms/expense.html" class="btn-primary">Log Expense →</a>
-          <a href="workflows/wf9-expense-logger.html" class="btn-ghost">Learn More ↗</a>
+        <p>Submit any expense from any device. It's stamped with a unique EXP-ID, logged to Google Sheets, and a receipt email arrives in your inbox — all in under 10 seconds.</p>
+        <div class="flow-diagram">
+          <div class="flow-node"><div class="flow-icon">💸</div><div class="flow-node-label">Submit</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">🔖</div><div class="flow-node-label">EXP-ID</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📊</div><div class="flow-node-label">Sheets Log</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📧</div><div class="flow-node-label">Receipt</div></div>
         </div>
       </div>
-
-      <div class="card">
-        <div class="card-top">
-          <div class="card-icon">😤</div>
-          <span class="card-tag tag-red">Customer Service</span>
+      <div class="wf-card-footer">
+        <div class="wf-scores">
+          <div class="wf-score"><div class="wf-score-label">Complexity</div><div class="wf-score-dots"><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot"></div><div class="wf-score-dot"></div><div class="wf-score-dot"></div></div></div>
+          <div class="wf-score"><div class="wf-score-label">Impact</div><div class="wf-score-dots"><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot"></div></div></div>
         </div>
-        <h3>Customer Complaint Handler</h3>
-        <p>Submit a complaint → GPT-4o analyzes severity and sentiment → routes HIGH/MEDIUM/LOW → staff alerted or auto-response sent.</p>
-        <div class="card-actions">
-          <a href="forms/complaint.html" class="btn-primary">Submit Complaint →</a>
-          <a href="workflows/wf13-complaint-handler.html" class="btn-ghost">Learn More ↗</a>
+        <div class="wf-cta">View Details →</div>
+      </div>
+    </a>
+
+    <!-- WF10 -->
+    <a href="workflows/wf10-kpi-checkin.html" class="wf-card reveal reveal-delay-2" data-type="personal">
+      <div class="wf-card-header">
+        <span class="wf-num-badge">WF10</span>
+        <span class="wf-type-badge type-personal">Personal</span>
+      </div>
+      <div class="wf-card-body">
+        <h3>Weekly KPI Check-In Report</h3>
+        <p>Every Monday at 8AM, a visual progress report shows every goal's completion percentage — red for behind, green for on track — automatically built from your goals sheet.</p>
+        <div class="flow-diagram">
+          <div class="flow-node"><div class="flow-icon">📅</div><div class="flow-node-label">Mon 8AM</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📊</div><div class="flow-node-label">Read Goals</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📐</div><div class="flow-node-label">Calc %</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">🎨</div><div class="flow-node-label">Build Report</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📧</div><div class="flow-node-label">Email</div></div>
         </div>
       </div>
-
-      <div class="card">
-        <div class="card-top">
-          <div class="card-icon">📝</div>
-          <span class="card-tag tag-purple">AI Powered</span>
+      <div class="wf-card-footer">
+        <div class="wf-scores">
+          <div class="wf-score"><div class="wf-score-label">Complexity</div><div class="wf-score-dots"><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot"></div><div class="wf-score-dot"></div></div></div>
+          <div class="wf-score"><div class="wf-score-label">Impact</div><div class="wf-score-dots"><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot"></div><div class="wf-score-dot"></div></div></div>
         </div>
+        <div class="wf-cta">View Details →</div>
+      </div>
+    </a>
+
+    <!-- WF11 -->
+    <a href="workflows/wf11-content-brief.html" class="wf-card reveal" data-type="ai">
+      <div class="wf-card-header">
+        <span class="wf-num-badge">WF11</span>
+        <span class="wf-type-badge type-ai">AI · GPT-4o</span>
+      </div>
+      <div class="wf-card-body">
+        <h3>Content Idea → Full Brief</h3>
+        <p>Type a rough idea in plain language. GPT-4o returns a complete content brief — refined title, target audience, full outline, keywords, CTA — emailed in under 30 seconds.</p>
+        <div class="flow-diagram">
+          <div class="flow-node"><div class="flow-icon">💡</div><div class="flow-node-label">Raw Idea</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">🤖</div><div class="flow-node-label">GPT-4o</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📋</div><div class="flow-node-label">Full Brief</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📊</div><div class="flow-node-label">Log Ideas</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📧</div><div class="flow-node-label">Email Brief</div></div>
+        </div>
+      </div>
+      <div class="wf-card-footer">
+        <div class="wf-scores">
+          <div class="wf-score"><div class="wf-score-label">Complexity</div><div class="wf-score-dots"><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot"></div><div class="wf-score-dot"></div></div></div>
+          <div class="wf-score"><div class="wf-score-label">Impact</div><div class="wf-score-dots"><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot"></div></div></div>
+        </div>
+        <div class="wf-cta">View Details →</div>
+      </div>
+    </a>
+
+    <!-- WF12 -->
+    <a href="workflows/wf12-meeting-summarizer.html" class="wf-card reveal reveal-delay-1" data-type="ai">
+      <div class="wf-card-header">
+        <span class="wf-num-badge">WF12</span>
+        <span class="wf-type-badge type-ai">AI · GPT-4o</span>
+      </div>
+      <div class="wf-card-body">
         <h3>Meeting Notes Summarizer</h3>
-        <p>Paste raw meeting notes → GPT-4o extracts action items, decisions, and next steps → structured summary emailed to all attendees.</p>
-        <div class="card-actions">
-          <a href="forms/meeting.html" class="btn-primary">Summarize Meeting →</a>
-          <a href="workflows/wf12-meeting-summarizer.html" class="btn-ghost">Learn More ↗</a>
+        <p>Paste raw, unstructured meeting notes. GPT-4o extracts decisions, action items with owners and due dates, next steps, and meeting mood — then emails all attendees.</p>
+        <div class="flow-diagram">
+          <div class="flow-node"><div class="flow-icon">📝</div><div class="flow-node-label">Raw Notes</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">🤖</div><div class="flow-node-label">GPT-4o</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">✅</div><div class="flow-node-label">Action Items</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📧</div><div class="flow-node-label">All Attendees</div></div>
         </div>
       </div>
-
-      <div class="card">
-        <div class="card-top">
-          <div class="card-icon">💡</div>
-          <span class="card-tag tag-orange">Content & Marketing</span>
+      <div class="wf-card-footer">
+        <div class="wf-scores">
+          <div class="wf-score"><div class="wf-score-label">Complexity</div><div class="wf-score-dots"><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot"></div></div></div>
+          <div class="wf-score"><div class="wf-score-label">Impact</div><div class="wf-score-dots"><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div></div></div>
         </div>
+        <div class="wf-cta">View Details →</div>
+      </div>
+    </a>
+
+    <!-- WF13 -->
+    <a href="workflows/wf13-complaint-handler.html" class="wf-card reveal reveal-delay-2" data-type="cx">
+      <div class="wf-card-header">
+        <span class="wf-num-badge">WF13</span>
+        <span class="wf-type-badge type-cx">Customer Experience</span>
+      </div>
+      <div class="wf-card-body">
+        <h3>Customer Complaint Handler</h3>
+        <p>GPT-4o reads every complaint, scores severity (HIGH/MEDIUM/LOW) and sentiment, extracts key concerns, drafts a response, and routes it — all within 60 seconds.</p>
+        <div class="flow-diagram">
+          <div class="flow-node"><div class="flow-icon">😤</div><div class="flow-node-label">Complaint</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">🤖</div><div class="flow-node-label">GPT-4o</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">⚖️</div><div class="flow-node-label">Severity</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">🔀</div><div class="flow-node-label">Route</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node"><div class="flow-icon">📧</div><div class="flow-node-label">Respond</div></div>
+        </div>
+      </div>
+      <div class="wf-card-footer">
+        <div class="wf-scores">
+          <div class="wf-score"><div class="wf-score-label">Complexity</div><div class="wf-score-dots"><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div><div class="wf-score-dot filled"></div></div></div>
+          <div class="wf-score"><div class="wf-score-label">Impact</div><div class="wf-score-dots"><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div><div class="wf-score-dot filled green"></div></div></div>
+        </div>
+        <div class="wf-cta">View Details →</div>
+      </div>
+    </a>
+
+  </div><!-- /wf-grid -->
+  </div>
+</section>
+
+<hr class="section-divider"/>
+
+<!-- ── LIVE DEMOS ── -->
+<section id="demos">
+  <div class="section">
+    <div class="reveal">
+      <div class="label">Live Demos</div>
+      <h2 class="section-h2">Real forms.<br/>Real automations.</h2>
+      <p class="section-sub">Each form below posts to a live n8n webhook. Submit a test and watch the automation fire in real time — emails sent, sheets updated, AI running.</p>
+    </div>
+    <div class="demos-grid">
+      <div class="demo-card dc-cyan reveal">
+        <div class="demo-icon">🧾</div>
+        <h3>Client Onboarding Intake</h3>
+        <p>Triggers welcome email + CRM entry + staff notification within 60 seconds of submission.</p>
+        <div class="demo-trigger"><span class="trigger-dot"></span> Live · Webhook /client-intake</div>
+        <a href="forms/onboarding.html" class="demo-btn cyan">Start Onboarding →</a>
+      </div>
+      <div class="demo-card dc-green reveal reveal-delay-1">
+        <div class="demo-icon">💸</div>
+        <h3>Expense Logger</h3>
+        <p>Logs expense to Google Sheets with a unique EXP-ID and emails a receipt confirmation instantly.</p>
+        <div class="demo-trigger"><span class="trigger-dot"></span> Live · Webhook /log-expense</div>
+        <a href="forms/expense.html" class="demo-btn green">Log Expense →</a>
+      </div>
+      <div class="demo-card dc-red reveal reveal-delay-2">
+        <div class="demo-icon">😤</div>
+        <h3>Customer Complaint Handler</h3>
+        <p>GPT-4o analyzes severity and sentiment, routes HIGH/MEDIUM/LOW, and responds appropriately.</p>
+        <div class="demo-trigger"><span class="trigger-dot"></span> Live · Webhook /handle-complaint</div>
+        <a href="forms/complaint.html" class="demo-btn red">Submit Complaint →</a>
+      </div>
+      <div class="demo-card dc-indigo reveal">
+        <div class="demo-icon">📝</div>
+        <h3>Meeting Notes Summarizer</h3>
+        <p>GPT-4o extracts action items, decisions, and next steps — emailed to all attendees in under 60 seconds.</p>
+        <div class="demo-trigger"><span class="trigger-dot"></span> Live · Webhook /summarize-meeting</div>
+        <a href="forms/meeting.html" class="demo-btn indigo">Summarize Meeting →</a>
+      </div>
+      <div class="demo-card dc-yellow reveal reveal-delay-1">
+        <div class="demo-icon">💡</div>
         <h3>Content Idea Capture</h3>
-        <p>Submit a rough idea in plain language → GPT-4o builds a full content brief with title, audience, outline, and CTA → emailed back in 30 seconds.</p>
-        <div class="card-actions">
-          <a href="forms/content.html" class="btn-primary">Capture Idea →</a>
-          <a href="workflows/wf11-content-brief.html" class="btn-ghost">Learn More ↗</a>
-        </div>
+        <p>Type a raw idea — GPT-4o returns a full content brief with outline, keywords, and CTA in 30 seconds.</p>
+        <div class="demo-trigger"><span class="trigger-dot"></span> Live · Webhook /capture-idea</div>
+        <a href="forms/content.html" class="demo-btn yellow">Generate Brief →</a>
       </div>
-
-      <div class="card">
-        <div class="card-top">
-          <div class="card-icon">📋</div>
-          <span class="card-tag tag-ut">Sales</span>
-        </div>
+      <div class="demo-card dc-pink reveal reveal-delay-2">
+        <div class="demo-icon">📋</div>
         <h3>Proposal Delivery + Follow-Up</h3>
-        <p>Send a proposal → client receives it instantly → automatic follow-up at Day 3 → staff escalation at Day 6 if no response.</p>
-        <div class="card-actions">
-          <a href="forms/proposal.html" class="btn-primary">Send Proposal →</a>
-          <a href="workflows/wf4-proposal-delivery.html" class="btn-ghost">Learn More ↗</a>
+        <p>Sends proposal instantly and schedules automatic follow-ups at Day 3 and escalation at Day 6.</p>
+        <div class="demo-trigger"><span class="trigger-dot"></span> Live · Webhook /proposal-ready</div>
+        <a href="forms/proposal.html" class="demo-btn pink">Send Proposal →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider"/>
+
+<!-- ── LEARNING OBJECTIVES ── -->
+<section id="learning-objectives">
+  <div class="section">
+    <div class="reveal">
+      <div class="label">ISA 4600 Learning Objectives</div>
+      <h2 class="section-h2">What this project<br/>demonstrates.</h2>
+    </div>
+    <div class="lo-grid">
+      <div class="lo-card reveal">
+        <div class="lo-num">LO-1</div>
+        <h4>Systems Analysis</h4>
+        <p>Identified real SMB pain points in client management, expense tracking, and sales follow-up. Designed automated solutions to address each gap.</p>
+      </div>
+      <div class="lo-card reveal reveal-delay-1">
+        <div class="lo-num">LO-2</div>
+        <h4>Technology Integration</h4>
+        <p>Integrated n8n Cloud, OpenAI GPT-4o, Google Sheets API, Gmail API, and webhook architecture into a cohesive 13-workflow system.</p>
+      </div>
+      <div class="lo-card reveal reveal-delay-2">
+        <div class="lo-num">LO-3</div>
+        <h4>Business Case Development</h4>
+        <p>Built cost comparison analysis showing $15K+/year in savings replacing enterprise tools with a $25/month automation stack.</p>
+      </div>
+      <div class="lo-card reveal">
+        <div class="lo-num">LO-4</div>
+        <h4>AI Application</h4>
+        <p>Applied GPT-4o to 5 workflows for lead qualification, complaint routing, meeting summarization, content generation, and sentiment analysis.</p>
+      </div>
+      <div class="lo-card reveal reveal-delay-1">
+        <div class="lo-num">LO-5</div>
+        <h4>Production Deployment</h4>
+        <p>Deployed all workflows to n8n Cloud with error handling, alert systems, and live webhook endpoints. Built and hosted a public demo site on GitHub Pages.</p>
+      </div>
+      <div class="lo-card reveal reveal-delay-2">
+        <div class="lo-num">LO-6</div>
+        <h4>Professional Communication</h4>
+        <p>Created this portfolio site, workflow documentation, cost comparison tables, and a full senior project report documenting all technical decisions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider"/>
+
+<!-- ── REFLECTION ── -->
+<section id="reflection">
+  <div class="reflection-bg"></div>
+  <div class="section">
+    <div class="reflection-grid">
+      <div class="overview-text reveal">
+        <div class="label">Reflection</div>
+        <h2 class="section-h2">What I built.<br/>What I learned.</h2>
+        <p class="reflection-text"><p>This project started as a question: <strong>can a small business run enterprise-level automation without an IT department or a $50K software budget?</strong> The answer is yes — and this site is the proof.</p>
+        <p>Building 13 production workflows forced me to think like a systems designer, not just a student. Every workflow had to handle real errors, real edge cases, and real data. The Google OAuth2 delays, the n8n expression syntax, the GPT-4o prompt engineering — none of it was theoretical.</p>
+        <p>The most important thing I learned: <strong>automation is not about replacing people. It's about removing the friction that stops people from doing their best work.</strong></p></p>
+      </div>
+      <div class="learnings reveal reveal-delay-2">
+        <div class="label" style="margin-bottom:24px;">Key Takeaways</div>
+        <div class="learning-item">
+          <div class="learning-num">1</div>
+          <div><h4>No-code ≠ No skill</h4><p>n8n required deep understanding of APIs, JSON, Luxon date math, conditional logic, and error handling — just without writing full application code.</p></div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-num">2</div>
+          <div><h4>GPT-4o needs structure</h4><p>Getting consistent, parseable output from an LLM requires careful prompt engineering, structured JSON schemas, and robust parsing logic.</p></div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-num">3</div>
+          <div><h4>OAuth2 is a real constraint</h4><p>Google's account verification requirements created real project delays — a lesson in planning for external dependencies and platform policies.</p></div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-num">4</div>
+          <div><h4>Ship fast, fix in prod</h4><p>Testing 13 workflows perfectly before deployment isn't realistic. Building good error handling and alerts matters more than perfect pre-launch testing.</p></div>
+        </div>
+        <div class="learning-item">
+          <div class="learning-num">5</div>
+          <div><h4>Design is part of the deliverable</h4><p>A well-designed portfolio site communicates technical credibility before anyone reads a single line of documentation.</p></div>
         </div>
       </div>
-
     </div>
   </div>
-</div>
+</section>
 
-<div class="all-workflows">
-  <div style="max-width:1120px;margin:0 auto;">
-    <div class="section-eyebrow">All 13 Workflows</div>
-    <div class="section-title" style="color:#003058;">Full Workflow Catalog</div>
-    <div class="section-sub">Click any workflow to see its full business case, cost comparison, and technical breakdown.</div>
-    <div class="all-grid" style="margin-top:0;">
-      <a href="workflows/wf1-client-intake.html" class="wf-card"><span class="wf-num">WF1</span><div class="wf-info"><h4>Client Intake + CRM Entry</h4><p>Professional Services</p></div></a>
-      <a href="workflows/wf2-document-followup.html" class="wf-card"><span class="wf-num">WF2/3</span><div class="wf-info"><h4>Document Follow-Up Reminders</h4><p>3-tier escalation system</p></div></a>
-      <a href="workflows/wf4-proposal-delivery.html" class="wf-card"><span class="wf-num">WF4</span><div class="wf-info"><h4>Proposal Delivery + Follow-Up</h4><p>Sales automation</p></div></a>
-      <a href="workflows/wf5-payment-alerts.html" class="wf-card"><span class="wf-num">WF5</span><div class="wf-info"><h4>Payment Due Alerts</h4><p>Daily AR monitoring</p></div></a>
-      <a href="workflows/wf6-status-report.html" class="wf-card"><span class="wf-num">WF6</span><div class="wf-info"><h4>Weekly Client Status Report</h4><p>Operations intelligence</p></div></a>
-      <a href="workflows/wf7-lead-qualifier.html" class="wf-card"><span class="wf-num">WF7</span><div class="wf-info"><h4>AI Lead Qualifier Chatbot</h4><p>GPT-4o · HOT/WARM/COLD scoring</p></div></a>
-      <a href="workflows/wf8-morning-briefing.html" class="wf-card"><span class="wf-num">WF8</span><div class="wf-info"><h4>Daily Morning Briefing</h4><p>Weather + Calendar + Priorities</p></div></a>
-      <a href="workflows/wf9-expense-logger.html" class="wf-card"><span class="wf-num">WF9</span><div class="wf-info"><h4>Expense Logger</h4><p>Google Sheets + receipt email</p></div></a>
-      <a href="workflows/wf10-kpi-checkin.html" class="wf-card"><span class="wf-num">WF10</span><div class="wf-info"><h4>Weekly KPI Check-In</h4><p>Goal tracking + visual report</p></div></a>
-      <a href="workflows/wf11-content-brief.html" class="wf-card"><span class="wf-num">WF11</span><div class="wf-info"><h4>Content Idea → Full Brief</h4><p>GPT-4o content strategy</p></div></a>
-      <a href="workflows/wf12-meeting-summarizer.html" class="wf-card"><span class="wf-num">WF12</span><div class="wf-info"><h4>Meeting Notes Summarizer</h4><p>AI action item extraction</p></div></a>
-      <a href="workflows/wf13-complaint-handler.html" class="wf-card"><span class="wf-num">WF13</span><div class="wf-info"><h4>Customer Complaint Handler</h4><p>GPT-4o severity routing</p></div></a>
-    </div>
-  </div>
-</div>
-
-<div class="about-section">
-  <div class="about-inner">
-    <div>
-      <h2>About This Project</h2>
-      <p>Tech Stack Automation LLC is a senior capstone project for ISA 4600 at Utah Tech University. The project demonstrates how small and medium-sized businesses can leverage no-code automation tools to replace expensive enterprise software stacks.</p>
-      <p>Every workflow on this site is production-grade — built on n8n Cloud, connected to real Google accounts, powered by OpenAI GPT-4o, and capable of processing live submissions.</p>
-      <div class="about-pills">
-        <span class="pill">n8n Cloud</span>
-        <span class="pill">OpenAI GPT-4o</span>
-        <span class="pill">Google Sheets</span>
-        <span class="pill">Gmail API</span>
-        <span class="pill">Webhook Triggers</span>
-        <span class="pill">Schedule Triggers</span>
-      </div>
-    </div>
-    <div class="info-table">
-      <div class="info-row"><div class="info-label">Student</div><div class="info-val">Justin Becerra</div></div>
-      <div class="info-row"><div class="info-label">Course</div><div class="info-val">ISA 4600 — Senior Project</div></div>
-      <div class="info-row"><div class="info-label">University</div><div class="info-val">Utah Tech University</div></div>
-      <div class="info-row"><div class="info-label">Semester</div><div class="info-val">Spring 2026</div></div>
-      <div class="info-row"><div class="info-label">Business</div><div class="info-val">Tech Stack Automation LLC</div></div>
-      <div class="info-row"><div class="info-label">Platform</div><div class="info-val">n8n Cloud · $25/mo</div></div>
-      <div class="info-row"><div class="info-label">Workflows</div><div class="info-val">13 production workflows</div></div>
-    </div>
-  </div>
-</div>
-
+<!-- ── FOOTER ── -->
 <footer>
-  <div class="footer-top">Tech Stack Automation LLC &nbsp;·&nbsp; <span class="ut-red">Utah Tech University</span></div>
-  ISA 4600 Senior Project · Justin Becerra · Spring 2026 &nbsp;|&nbsp; Powered by n8n Cloud · OpenAI GPT-4o · Google Sheets
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="f-name">Justin <span>Becerra</span></div>
+      <div class="f-sub">ISA 4600 Senior Project · Utah Tech University · Spring 2026</div>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/jstnbcrr" class="footer-link" target="_blank">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a href="https://linkedin.com/in/jstnbcrr" class="footer-link" target="_blank">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <a href="mailto:jstnbcrr@gmail.com" class="footer-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+        Email
+      </a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>Tech Stack Automation LLC &nbsp;·&nbsp; Built with n8n Cloud, OpenAI GPT-4o, Google Sheets &amp; Gmail</div>
+    <div>© 2026 <span>Utah Tech University</span> · ISA 4600</div>
+  </div>
 </footer>
 
+<script>
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── WORKFLOW FILTER ──
+function filterWF(type, btn) {
+  document.querySelectorAll('.wf-filter button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.wf-card').forEach(card => {
+    if (type === 'all' || card.dataset.type === type) {
+      card.style.display = 'flex';
+      card.style.flexDirection = 'column';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+// ── NAV ACTIVE STATE ──
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+  navLinks.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--text)' : '';
+  });
+});
+</script>
 </body>
 </html>
